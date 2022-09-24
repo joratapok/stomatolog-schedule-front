@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import {styled} from '@mui/system';
 
-export const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  flex-grow: 1;
-`;
+export const ContentContainer = styled('div')(({theme}) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  flex: '1 1 auto',
+  padding: theme.spacing(1),
+}));

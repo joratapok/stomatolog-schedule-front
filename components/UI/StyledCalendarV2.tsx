@@ -1,14 +1,15 @@
-import {styled} from '@mui/system';
+import {alpha, styled} from '@mui/system';
 import {Paper} from '@mui/material';
 
-export const StyledCalendarContainer = styled(Paper)(({theme}) => ({
-  marginBottom: theme.spacing(2),
+export const StyledCalendarV2 = styled(Paper)(({theme}) => ({
+  margin: 'auto',
   padding: theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
 
   /* ~~~ navigation styles ~~~ */
   '.react-calendar__navigation': {
     display: 'flex',
+    marginBottom: theme.spacing(1),
 
     '.react-calendar__navigation__label': {
       fontWeight: 'bold',
@@ -29,19 +30,19 @@ export const StyledCalendarContainer = styled(Paper)(({theme}) => ({
 
   /* ~~~ button styles ~~~ */
   'button': {
-    margin: '2px',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: 'transparent',
     border: 0,
-    borderRadius: '3px',
-    color: 'white',
-    padding: '5px 0px',
+    color: theme.palette.text.primary,
+    padding: '8px 0px',
+    borderRadius: theme.shape.borderRadius,
 
     '&:hover': {
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: alpha(theme.palette.primary.main, 0.2),
+      // color: theme.palette.secondary.contrastText,
     },
 
     '&:active': {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main,
     },
   },
 
@@ -60,13 +61,13 @@ export const StyledCalendarContainer = styled(Paper)(({theme}) => ({
     opacity: '0.7',
   },
   '.react-calendar__month-view__days__day--weekend': {
-    color: '#dfdfdf',
+    color: theme.palette.error.main,
   },
 
   /* ~~~ active day styles ~~~ */
   '.react-calendar__tile--range': {
-    backgroundColor: theme.palette.secondary.dark,
-    color: theme.palette.secondary.contrastText,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
   },
 
   /* ~~~ other view styles ~~~ */
@@ -82,6 +83,8 @@ export const StyledCalendarContainer = styled(Paper)(({theme}) => ({
 
     '.react-calendar__tile': {
       maxWidth: 'initial !important',
+      backgroundColor: 'transparent',
+      padding: '10px 6.6667px',
     },
   },
 }));

@@ -1,5 +1,5 @@
 import {createTheme, responsiveFontSizes} from '@mui/material/styles';
-import {purple} from '@mui/material/colors';
+import {purple, grey, cyan} from '@mui/material/colors';
 
 export const lightTheme = {
   body: '#ECECEC',
@@ -36,31 +36,64 @@ export const light = createTheme({
       default: '#ececec',
       paper: '#fff',
     },
-    primary: purple,
+    primary: {
+      light: purple[300],
+      main: purple[400],
+      dark: purple[600],
+    },
+    secondary: {
+      light: cyan[300],
+      main: cyan[600],
+      dark: cyan[800],
+    },
     button: {
       main: purple[600],
       dark: purple[700],
       contrastText: '#ffffff',
     },
+    borders: {
+      main: grey[300],
+      dark: grey[400],
+    },
   },
 });
+
+/*
+#121212
+#212121
+#303030
+#424242
+ */
 
 const dark = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: '#303030',
-      paper: '#424242',
+      default: '#212121',
+      paper: '#282828',
+    },
+    text: {
+      primary: 'rgba(255,255,255,0.7)',
+      secondary: 'rgba(255,255,255,0.5)',
     },
     primary: {
-      light: purple[200],
-      main: purple[300],
-      dark: purple[400],
+      light: '#DBB2FF',
+      main: '#BB86FC',
+      dark: '#985EFF',
+    },
+    secondary: {
+      light: cyan[500],
+      main: cyan[300],
+      dark: cyan[200],
     },
     button: {
       main: purple[400],
       dark: purple[600],
-      contrastText: '#ffffff',
+      contrastText: '#000',
+    },
+    borders: {
+      main: grey[600],
+      dark: grey[700],
     },
   },
 });

@@ -8,17 +8,12 @@ const initialState = {
   refreshToken: '',
   isLoading: false,
   error: '',
-  count: 0,
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    increment(state, action: PayloadAction<number>) {
-      state.count += action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: {
     [postSignIn.fulfilled.type]: (
       state,

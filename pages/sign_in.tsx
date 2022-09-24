@@ -1,6 +1,6 @@
 import React from 'react';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import {FormHelperText, TextField} from '@mui/material';
+import {Button, FormHelperText, TextField} from '@mui/material';
 import {FormContainer} from '../components/UI/FormContainer';
 import {AuthInput} from '../components/UI/AuthInput';
 import {SubmitButton} from '../components/UI/buttons/SubmitButton';
@@ -63,7 +63,7 @@ const SignIn = () => {
                 />
               )}
             />
-            <SubmitButton onClick={handleSubmit(onSubmit)} variant={'contained'}>
+            <SubmitButton onClick={handleSubmit(onSubmit)} variant={'text'}>
               Войти
             </SubmitButton>
             <FormHelperText error={true}>

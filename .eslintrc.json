@@ -14,6 +14,7 @@
     "max-len": ["error", { "code": 80, "ignoreUrls": true }],
     "comma-dangle": ["warn", "always-multiline"],
     "semi": ["warn", "always"],
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "@typescript-eslint/ban-ts-ignore": "off"
   }
 }

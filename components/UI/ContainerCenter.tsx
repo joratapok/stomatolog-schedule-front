@@ -5,4 +5,5 @@ export const ContainerCenter = styled('div')(() => ({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+  minHeight: '50px',
 }));
