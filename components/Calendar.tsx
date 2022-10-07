@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Calendar from 'react-calendar';
 import {StyledCalendarContainer} from './UI/StyledCalendar';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {eventSlice} from '../store/reducers/eventSlice';
+import {calendarSlice} from '../store/reducers/calendarSlice';
 import {format} from 'date-fns';
 import ru from 'date-fns/locale/ru';
 import {StyledCalendarV2} from './UI/StyledCalendarV2';
@@ -17,9 +17,9 @@ import {StyledCalendarV2} from './UI/StyledCalendarV2';
  */
 
 export const SCalendar = () => {
-  const {date} = useAppSelector(state => state.eventSlice);
+  const {date} = useAppSelector((state) => state.calendarSlice);
   const dispatch = useAppDispatch();
-  const {setDate} = eventSlice.actions;
+  const {setDate} = calendarSlice.actions;
 
   const calendarHandler = useCallback((value: Date) => {
     const dateText = format(value, 'do MMMM', {locale: ru});
@@ -28,7 +28,7 @@ export const SCalendar = () => {
 
   useEffect(() => {
     calendarHandler(new Date(date));
-  },[]);
+  }, []);
   return (
     <>
       {/*<StyledCalendarContainer>*/}
@@ -50,6 +50,5 @@ export const SCalendar = () => {
         />
       </StyledCalendarV2>
     </>
-
   );
 };

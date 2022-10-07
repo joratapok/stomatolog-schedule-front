@@ -29,7 +29,7 @@ export const StyledCalendarV2 = styled(Paper)(({theme}) => ({
   },
 
   /* ~~~ button styles ~~~ */
-  'button': {
+  button: {
     backgroundColor: 'transparent',
     border: 0,
     color: theme.palette.text.primary,

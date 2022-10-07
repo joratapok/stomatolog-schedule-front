@@ -12,10 +12,12 @@ import {TimeCell} from './UI/table/TimeCell';
 import {EventRow} from './UI/table/EventRow';
 import {EventCell} from './UI/table/EventCell';
 import {NoBorderCell} from './UI/table/NoBorderCell';
-import {useAppSelector} from '../hooks/redux';
+import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {Typography} from '@mui/material';
 import {EventAbsolute} from './UI/table/EventAbsolute';
 import {CELL_HEIGHT} from '../constants/tableSize';
+import {calendarSlice} from '../store/reducers/calendarSlice';
+import {eventSlice} from '../store/reducers/eventSlice';
 
 const mockEvents = [
   {
@@ -28,19 +30,23 @@ const mockEvents = [
     dateStart: parse('12:55', 'HH:mm', new Date()),
     dateFinish: parse('13:55', 'HH:mm', new Date()),
   },
+  {
+    id: 3,
+    dateStart: parse('15:30', 'HH:mm', new Date()),
+    dateFinish: parse('17:00', 'HH:mm', new Date()),
+  },
 ];
 
 const cabinets = [
-  'Кабинет 1, Врач 1',
-  'Кабинет 2, Врач 2',
-  'Кабинет 3, Врач 1',
-  'Кабинет 4, Врач 2',
-  'Кабинет 5, Врач 1',
-  'Кабинет 6, Врач 2',
+  {id: 0, name: 'Кабинет 1, Врач 1'},
+  {id: 1, name: 'Кабинет 2, Врач 2'},
+  {id: 2, name: 'Кабинет 3, Врач 3'},
 ];
 
 export const TimeTable = () => {
-  const {dateText} = useAppSelector(state => state.eventSlice);
+  const dispatch = useAppDispatch();
+  const {setInitialEvent, showModal} = eventSlice.actions;
+  const {dateText} = useAppSelector((state) => state.calendarSlice);
 
   const period = 30;
   const timeFrom = parse('08:00', 'HH:mm', new Date());
@@ -54,9 +60,13 @@ export const TimeTable = () => {
     return {startInterval, finishInterval, timeString};
   });
 
+  const createEvent = (start: Date, cabinetId: number) => {
+    dispatch(setInitialEvent({timeStart: start.getTime(), cabinetId}));
+    dispatch(showModal());
+  };
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 300 }} aria-label="simple table">
+      <Table sx={{minWidth: 300}} aria-label="simple table">
         <TableHead>
           <TableRow sx={{borderBottom: '0px solid'}}>
             <NoBorderCell sx={{width: '50px'}} />
@@ -66,37 +76,53 @@ export const TimeTable = () => {
           </TableRow>
           <TableRow sx={{border: '0px'}}>
             <NoBorderCell sx={{width: '50px'}} />
-            {cabinets.map(el =>
-              <NoBorderCell key={el} align="center">{el}</NoBorderCell>
-            )}
+            {cabinets.map((el) => (
+              <NoBorderCell key={el.id} align="center">
+                {el.name}
+              </NoBorderCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody sx={{position: 'relative'}}>
-          {timeInRows.map(({timeString,
-            startInterval: start,
-            finishInterval: end}) => (
-            <EventRow key={timeString}>
-              <TimeCell align="center" component="th" scope="row">
-                {timeString}
-              </TimeCell>
-              {cabinets.map(cabinet =>
-                <EventCell key={`${timeString}${cabinet}`}>
-                  {mockEvents.map(el => {
-                    if (isWithinInterval(el.dateStart, {start, end})) {
-                      const eventMinutes = differenceInMinutes(el.dateFinish, el.dateStart);
-                      const heightFactor = eventMinutes / period;
-                      const startDiff = differenceInMinutes(el.dateStart, start);
-                      const topOffsetFactor = startDiff / period;
-                      return <EventAbsolute
-                        key={el.id}
-                        sx={{height: heightFactor*CELL_HEIGHT-4, top: topOffsetFactor*CELL_HEIGHT+2}}
-                      />;
-                    }
-                  })}
-                </EventCell>
-              )}
-            </EventRow>
-          ))}
+          {timeInRows.map(
+            ({timeString, startInterval: start, finishInterval: end}) => (
+              <EventRow key={timeString}>
+                <TimeCell align="center" component="th" scope="row">
+                  {timeString}
+                </TimeCell>
+                {cabinets.map((cabinet) => (
+                  <EventCell
+                    onClick={() => createEvent(start, cabinet.id)}
+                    key={`${cabinet.id}`}
+                  >
+                    {mockEvents.map((el) => {
+                      if (isWithinInterval(el.dateStart, {start, end})) {
+                        const eventMinutes = differenceInMinutes(
+                          el.dateFinish,
+                          el.dateStart
+                        );
+                        const heightFactor = eventMinutes / period;
+                        const startDiff = differenceInMinutes(
+                          el.dateStart,
+                          start
+                        );
+                        const topOffsetFactor = startDiff / period;
+                        return (
+                          <EventAbsolute
+                            key={el.id}
+                            sx={{
+                              height: heightFactor * CELL_HEIGHT - 4,
+                              top: topOffsetFactor * CELL_HEIGHT + 2,
+                            }}
+                          />
+                        );
+                      }
+                    })}
+                  </EventCell>
+                ))}
+              </EventRow>
+            )
+          )}
         </TableBody>
       </Table>
     </TableContainer>

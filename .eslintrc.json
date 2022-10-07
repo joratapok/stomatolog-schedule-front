@@ -1,10 +1,13 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended"
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "no-unused-vars": "warn",
     "prefer-const": "error",
@@ -15,6 +18,10 @@
     "comma-dangle": ["warn", "always-multiline"],
     "semi": ["warn", "always"],
     "react/display-name": "off",
-    "@typescript-eslint/ban-ts-ignore": "off"
+    "object-curly-spacing": ["error", "never"],
+    "@typescript-eslint/ban-ts-comment": "off",
+    "prettier/prettier": ["error",{
+      "endOfLine": "auto"}
+    ]
   }
 }

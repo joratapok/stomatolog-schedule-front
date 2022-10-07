@@ -1,5 +1,5 @@
 import React from 'react';
-import { SubmitHandler, useForm, Controller } from 'react-hook-form';
+import {SubmitHandler, useForm, Controller} from 'react-hook-form';
 import {Button, FormHelperText, TextField} from '@mui/material';
 import {FormContainer} from '../components/UI/FormContainer';
 import {AuthInput} from '../components/UI/AuthInput';
@@ -17,7 +17,7 @@ const SignIn = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log('submit', data);
@@ -28,11 +28,11 @@ const SignIn = () => {
         <ContainerInline>
           <FormContainer>
             <Controller
-              rules={{ required: true }}
+              rules={{required: true}}
               name={'name'}
               control={control}
               defaultValue={''}
-              render={({ field: { onChange, onBlur, value } }) => (
+              render={({field: {onChange, onBlur, value}}) => (
                 <AuthInput
                   required
                   label={'Почта'}
@@ -47,11 +47,11 @@ const SignIn = () => {
             {/*<input placeholder={'Почта'}
             {...register('name', {required: true})} />*/}
             <Controller
-              rules={{ required: true }}
+              rules={{required: true}}
               name={'password'}
               control={control}
               defaultValue={''}
-              render={({ field: { onChange, onBlur, value } }) => (
+              render={({field: {onChange, onBlur, value}}) => (
                 <AuthInput
                   required
                   label={'Пароль'}

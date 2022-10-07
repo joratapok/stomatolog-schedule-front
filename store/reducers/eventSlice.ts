@@ -1,18 +1,26 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {StateDate} from '../../types/types';
+import {StateEventInit} from '../../types/types';
 
 const initialState = {
-  date: Date.now(),
-  dateText: '',
+  isVisibleModal: false,
+  cabinetId: 0,
+  timeStart: 0,
+  timeFinish: 0,
 };
 
 export const eventSlice = createSlice({
   name: 'event',
   initialState,
   reducers: {
-    setDate(state, action: PayloadAction<StateDate>) {
-      state.date = action.payload.date;
-      state.dateText = action.payload.dateText;
+    setInitialEvent(state, action: PayloadAction<StateEventInit>) {
+      state.cabinetId = action.payload.cabinetId;
+      state.timeStart = action.payload.timeStart;
+    },
+    showModal(state) {
+      state.isVisibleModal = true;
+    },
+    closeModal(state) {
+      state.isVisibleModal = false;
     },
   },
 });

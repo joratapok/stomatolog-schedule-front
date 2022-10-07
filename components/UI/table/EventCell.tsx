@@ -10,6 +10,7 @@ export const EventCell = styled(TableCell)(({theme}) => ({
   borderTop: '1px solid',
   borderColor: theme.palette.borders.main,
   '&:hover': {
+    cursor: 'pointer',
     backgroundColor: alpha(theme.palette.primary.light, 0.1),
   },
 }));
