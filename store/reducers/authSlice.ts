@@ -1,11 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { postSignIn } from './actionCreators';
-import { SignInResponse } from '../../types/types';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {postSignIn} from './actionCreators';
+import {IAuthRes} from '../../models/IAuth';
 
 const initialState = {
   isAuth: true,
-  assesToken: '',
-  refreshToken: '',
+  accessToken: '',
   isLoading: false,
   error: '',
 };
@@ -15,13 +14,9 @@ export const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [postSignIn.fulfilled.type]: (
-      state,
-      action: PayloadAction<SignInResponse>
-    ) => {
+    [postSignIn.fulfilled.type]: (state, action: PayloadAction<IAuthRes>) => {
       state.isLoading = false;
-      state.assesToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+      state.accessToken = action.payload.auth_token;
       state.isAuth = true;
       state.error = '';
     },

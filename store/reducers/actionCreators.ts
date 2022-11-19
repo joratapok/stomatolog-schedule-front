@@ -1,12 +1,12 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { SignInResponse } from '../../types/types';
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {IAuthReq} from '../../models/IAuth';
+import {authApi} from '../../api/authApi';
 
 export const postSignIn = createAsyncThunk(
   'signIn/post',
-  async (_, thunkAPI) => {
+  async (userData: IAuthReq, thunkAPI) => {
     try {
-      const response = await axios.post<SignInResponse>('');
+      const response = await authApi.login(userData);
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue('Sign in failed');
