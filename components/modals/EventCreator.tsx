@@ -31,7 +31,7 @@ type Inputs = {
 
 export const EventCreator: React.FC<Props> = ({isVisible, onCloseRequest}) => {
   console.log('render modal');
-  const {timeStart, cabinetId} = useAppSelector((state) => state.eventSlice);
+  const {timeStart} = useAppSelector((state) => state.eventSlice);
   const {
     control,
     handleSubmit,

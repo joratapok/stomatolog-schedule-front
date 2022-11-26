@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import Calendar from 'react-calendar';
-import {StyledCalendarContainer} from './UI/StyledCalendar';
+// import {StyledCalendarContainer} from './UI/StyledCalendar';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {calendarSlice} from '../store/reducers/calendarSlice';
 import {format} from 'date-fns';
@@ -14,6 +14,7 @@ import {StyledCalendarV2} from './UI/StyledCalendarV2';
   dd - 01 - 31  d - 1 -31  EEEE - Monday
   HH - 01 - 24 hours
   mm - 01 - 59 minutes
+  xxx - +03:00
  */
 
 export const SCalendar = () => {

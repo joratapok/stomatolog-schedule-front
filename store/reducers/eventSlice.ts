@@ -2,10 +2,9 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {StateEventInit} from '../../types/types';
 
 const initialState = {
-  isVisibleModal: false,
   cabinetId: 0,
   timeStart: 0,
-  timeFinish: 0,
+  isVisibleModal: false,
 };
 
 export const eventSlice = createSlice({

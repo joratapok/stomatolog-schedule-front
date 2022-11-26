@@ -1,5 +1,5 @@
 export interface IAuthRes {
-  auth_token: string;
+  authToken: string;
 }
 
 export interface IAuthReq {

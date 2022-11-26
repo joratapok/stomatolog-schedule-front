@@ -1,4 +1,4 @@
-import {light, lightTheme} from '../components/UI/themes';
+import {light, lightTheme} from '../config/themes';
 
 export enum EThemeType {
   LIGHT = 'light',
@@ -7,4 +7,3 @@ export enum EThemeType {
 
 // export type Theme = typeof lightTheme
 // export type Theme = typeof light
-

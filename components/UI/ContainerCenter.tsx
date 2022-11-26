@@ -2,8 +2,8 @@ import {styled} from '@mui/system';
 
 export const ContainerCenter = styled('div')(() => ({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   minHeight: '50px',
 }));

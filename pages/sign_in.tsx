@@ -18,6 +18,7 @@ import {postSignIn} from '../store/reducers/actionCreators';
 import {IAuthReq} from '../models/IAuth';
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {useRouter} from 'next/router';
+import {EUrls} from '../types/urls';
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
@@ -43,7 +44,9 @@ const SignIn = () => {
   };
   useEffect(() => {
     if (accessToken) {
-      router.push('/');
+      router
+        .push(EUrls.HOME_PAGE)
+        .catch((e) => console.log('redirect to home error', e));
     }
   }, [accessToken]);
   return (
@@ -59,7 +62,7 @@ const SignIn = () => {
               render={({field: {onChange, onBlur, value}}) => (
                 <FormControl variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Логин
+                    Почта
                   </InputLabel>
                   <AuthInput
                     required
@@ -73,8 +76,6 @@ const SignIn = () => {
                 </FormControl>
               )}
             />
-            {/*<input placeholder={'Почта'}
-            {...register('name', {required: true})} />*/}
             <Controller
               rules={{required: true}}
               name={'password'}

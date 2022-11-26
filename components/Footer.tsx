@@ -1,13 +1,15 @@
 import React from 'react';
-import { ContainerCenter } from './UI/ContainerCenter';
 import {Typography} from '@mui/material';
+import {ContainerInline} from './UI/ContainerInline';
 
 export const Footer = () => {
   return (
     <header>
-      <ContainerCenter>
-        <Typography variant={'h4'}>Footer</Typography>
-      </ContainerCenter>
+      <ContainerInline>
+        <Typography sx={{textAlign: 'center'}} variant={'h4'}>
+          Footer
+        </Typography>
+      </ContainerInline>
     </header>
   );
 };

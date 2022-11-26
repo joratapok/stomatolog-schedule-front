@@ -28,7 +28,7 @@ export const StyledCalendarContainer = styled(Paper)(({theme}) => ({
   },
 
   /* ~~~ button styles ~~~ */
-  'button': {
+  button: {
     margin: '2px',
     backgroundColor: theme.palette.primary.main,
     border: 0,

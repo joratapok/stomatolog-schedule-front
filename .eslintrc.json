@@ -19,6 +19,7 @@
     "react/display-name": "off",
     "object-curly-spacing": ["error", "never"],
     "@typescript-eslint/ban-ts-comment": "off",
+    "react-hooks/exhaustive-deps": "off",
     "prettier/prettier": ["error",{
       "endOfLine": "auto"}
     ]

@@ -1,4 +1,3 @@
-import React from 'react';
 import {styled} from '@mui/system';
 import TableRow from '@mui/material/TableRow';
 import {CELL_HEIGHT} from '../../../constants/tableSize';
