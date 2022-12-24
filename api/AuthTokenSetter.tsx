@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {instance} from './api';
@@ -6,7 +6,7 @@ import {EUrls} from '../types/urls';
 import {getAuth} from '../store/reducers/actionCreators';
 import {authSlice} from '../store/reducers/authSlice';
 
-export const AuthTokenSetter = ({children}: any) => {
+export const AuthTokenSetter = ({children}: React.PropsWithChildren) => {
   const dispatch = useAppDispatch();
   const {accessToken, isReady} = useAppSelector((state) => state.authSlice);
   const {initApp} = authSlice.actions;
@@ -22,7 +22,7 @@ export const AuthTokenSetter = ({children}: any) => {
         .push(EUrls.SIGN_IN)
         .catch((e) => console.log('redirect sign_in error', e));
     }
-  });
+  }, [accessToken, isReady]);
   /*
    * Login handler
    */

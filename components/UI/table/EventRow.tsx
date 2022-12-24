@@ -1,10 +1,9 @@
 import {styled} from '@mui/system';
-import TableRow from '@mui/material/TableRow';
+import {TableRow} from '@mui/material';
 import {CELL_HEIGHT} from '../../../constants/tableSize';
 
 export const EventRow = styled(TableRow)(({theme}) => ({
   'th,td': {
-    // padding: theme.spacing(1),
     padding: 0,
     height: `${CELL_HEIGHT}px`,
   },

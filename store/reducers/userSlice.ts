@@ -6,15 +6,14 @@ const initialState: IProfile = {
   username: '',
   firstName: '',
   lastName: '',
-  profile: {
-    middleName: '',
-    role: '',
-    dateOfBirth: '',
-    phone: '',
-    image: '',
-    speciality: '',
-    clinic: [],
-  },
+  middleName: '',
+  role: '',
+  dateOfBirth: '',
+  phone: '',
+  image: '',
+  speciality: '',
+  clinic: [],
+  token: '',
 };
 
 export const userSlice = createSlice({

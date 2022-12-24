@@ -1,5 +1,5 @@
 import {createTheme, responsiveFontSizes} from '@mui/material/styles';
-import {purple, grey, cyan} from '@mui/material/colors';
+import {purple, grey, cyan, blueGrey} from '@mui/material/colors';
 
 export const lightTheme = {
   body: '#ECECEC',
@@ -55,6 +55,19 @@ export const light = createTheme({
       main: grey[300],
       dark: grey[400],
     },
+    suggestions: {
+      main: blueGrey[100],
+      dark: blueGrey[200],
+    },
+  },
+  typography: {
+    h6: {
+      fontSize: '0.9rem',
+    },
+    reverse: {
+      fontSize: '0.9rem',
+      color: 'rgba(255,255,255,0.9)',
+    },
   },
 });
 
@@ -94,6 +107,19 @@ const dark = createTheme({
     borders: {
       main: grey[600],
       dark: grey[700],
+    },
+    suggestions: {
+      main: blueGrey[800],
+      dark: blueGrey[900],
+    },
+  },
+  typography: {
+    h6: {
+      fontSize: '0.9rem',
+    },
+    reverse: {
+      fontSize: '0.9rem',
+      color: '#212121',
     },
   },
 });

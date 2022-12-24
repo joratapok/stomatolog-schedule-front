@@ -10,6 +10,10 @@ export const EventAbsolute = styled('div')(({theme}) => ({
   borderColor: theme.palette.secondary.dark,
   backgroundColor: theme.palette.secondary.main,
   borderRadius: theme.shape.borderRadius,
+  overflow: 'hidden',
   // @ts-ignore
   zIndex: theme.zIndex.appBar,
+  '&:hover': {
+    left: '4px',
+  },
 }));

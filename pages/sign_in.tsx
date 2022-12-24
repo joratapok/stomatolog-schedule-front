@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {SubmitHandler, useForm, Controller} from 'react-hook-form';
+import {useRouter} from 'next/router';
+import {Visibility, VisibilityOff} from '@mui/icons-material';
 import {
   FormControl,
   FormHelperText,
@@ -16,15 +18,17 @@ import {ContainerCenterGrow} from '../components/UI/ContainerCenterGrow';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {postSignIn} from '../store/reducers/actionCreators';
 import {IAuthReq} from '../models/IAuth';
-import {Visibility, VisibilityOff} from '@mui/icons-material';
-import {useRouter} from 'next/router';
+
 import {EUrls} from '../types/urls';
 
 const SignIn = () => {
+  console.log('sign in');
   const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const {isLoading, accessToken} = useAppSelector((state) => state.authSlice);
+  const {isLoading, accessToken, error} = useAppSelector(
+    (state) => state.authSlice
+  );
   const {
     control,
     handleSubmit,
@@ -61,7 +65,7 @@ const SignIn = () => {
               defaultValue={''}
               render={({field: {onChange, onBlur, value}}) => (
                 <FormControl variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">
+                  <InputLabel htmlFor="outlined-adornment-login">
                     Почта
                   </InputLabel>
                   <AuthInput
@@ -118,8 +122,8 @@ const SignIn = () => {
             >
               Войти
             </SubmitButton>
-            <FormHelperText hidden={true} error={true}>
-              {true && 'тут будем показывать ощибки'}
+            <FormHelperText hidden={!error} error={true}>
+              {error}
             </FormHelperText>
           </FormContainer>
         </ContainerInline>

@@ -1,4 +1,7 @@
-export interface Profile {
+export interface IProfile {
+  username: string;
+  firstName: string;
+  lastName: string;
   middleName: string;
   role: string;
   dateOfBirth: string;
@@ -6,12 +9,5 @@ export interface Profile {
   image?: string;
   speciality?: string;
   clinic: number[];
-}
-
-export interface IProfile {
-  username: string;
-  firstName: string;
-  lastName: string;
-  profile: Profile;
-  authToken: {authToken: string};
+  token: string;
 }

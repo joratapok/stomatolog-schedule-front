@@ -5,4 +5,5 @@ export const ContainerInline = styled('div')(() => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
+  marginTop: '8px',
 }));

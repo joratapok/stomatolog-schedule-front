@@ -13,7 +13,7 @@
     "quotes": ["error", "single"],
     "jsx-quotes": ["error", "prefer-double"],
     "indent": ["warn", 2],
-    "max-len": ["error", { "code": 80, "ignoreUrls": true }],
+//    "max-len": ["error", { "code": 80, "ignoreUrls": true }],
     "comma-dangle": ["warn", "always-multiline"],
     "semi": ["warn", "always"],
     "react/display-name": "off",

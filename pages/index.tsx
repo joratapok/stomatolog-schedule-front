@@ -2,9 +2,8 @@ import type {NextPage} from 'next';
 import Grid from '@mui/material/Unstable_Grid2';
 import {SCalendar} from '../components/Calendar';
 import {TimeTable} from '../components/TimeTable';
-import {EventCreator} from '../components/modals/EventCreator';
-import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {eventSlice} from '../store/reducers/eventSlice';
+import {TablePeriodChanger} from '../components/TablePeriodChanger';
+import {ModalsKeeper} from '../components/ModalsKeeper';
 
 /*
   xs, extra-small: 0px
@@ -15,24 +14,16 @@ import {eventSlice} from '../store/reducers/eventSlice';
 */
 
 const Home: NextPage = () => {
-  const dispatch = useAppDispatch();
-  const {closeModal} = eventSlice.actions;
-  const {isVisibleModal} = useAppSelector((state) => state.eventSlice);
-  const onCloseRequest = () => {
-    dispatch(closeModal());
-  };
   return (
     <Grid container xs={12} spacing={{sm: 1, md: 2, lg: 3}}>
       <Grid xs={12} sm={3} sx={{minWidth: '300px', maxWidth: '600px'}}>
         <SCalendar />
+        <TablePeriodChanger />
       </Grid>
-      <Grid xs={12} sm={true}>
+      <Grid xs={12} sm={true} sx={{minWidth: '300px'}}>
         <TimeTable />
       </Grid>
-      <EventCreator
-        isVisible={isVisibleModal}
-        onCloseRequest={onCloseRequest}
-      />
+      <ModalsKeeper />
     </Grid>
   );
 };

@@ -1,12 +1,11 @@
 import React, {useCallback, useEffect} from 'react';
-import Calendar from 'react-calendar';
-// import {StyledCalendarContainer} from './UI/StyledCalendar';
-import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {calendarSlice} from '../store/reducers/calendarSlice';
+import {Calendar} from 'react-calendar';
 import {format} from 'date-fns';
 import ru from 'date-fns/locale/ru';
+import {useAppDispatch, useAppSelector} from '../hooks/redux';
+import {calendarSlice} from '../store/reducers/calendarSlice';
 import {StyledCalendarV2} from './UI/StyledCalendarV2';
-// import 'react-calendar/dist/Calendar.css';
+// import {StyledCalendarContainer} from './UI/StyledCalendar';
 
 /*
   yyyy - 2022 yy - 22
