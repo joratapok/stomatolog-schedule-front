@@ -4,6 +4,7 @@ import authSlice from './reducers/authSlice';
 import eventSlice from './reducers/eventSlice';
 import calendarSlice from './reducers/calendarSlice';
 import userSlice from './reducers/userSlice';
+import settingSlice from './reducers/settingSlice';
 import {api} from '../services/rtkBaseApi';
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   eventSlice,
   calendarSlice,
   userSlice,
+  settingSlice,
 });
 
 export const setupStore = () => {

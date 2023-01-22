@@ -1,31 +1,25 @@
 import {createTheme, responsiveFontSizes} from '@mui/material/styles';
 import {purple, grey, cyan, blueGrey} from '@mui/material/colors';
 
-export const lightTheme = {
-  body: '#ECECEC',
-  text: '#214966',
-  toggleBorder: '#FFF',
-  colors: {
-    background: '#ECECEC',
-    backForm: '#FFF',
+const typoHeaders = {
+  h6: {
+    fontSize: '0.9rem',
+    fontWeight: 400,
+    '@media (min-width:1000px)': {
+      fontSize: '1rem',
+    },
   },
-  button: {
-    background: '#ECECEC',
-    text: '#FFF',
+  h5: {
+    fontSize: '1.1rem',
+    '@media (min-width:1000px)': {
+      fontSize: '1.2rem',
+    },
   },
-};
-export const darkTheme = {
-  body: '#363537',
-  text: '#FFFFFF',
-  toggleBorder: '#6B8096',
-  background: '#999',
-  colors: {
-    background: '#999',
-    backForm: '#262627',
-  },
-  button: {
-    background: '#FFF',
-    text: '#282828',
+  h4: {
+    fontSize: '1.3rem',
+    '@media (min-width:1000px)': {
+      fontSize: '1.5rem',
+    },
   },
 };
 
@@ -61,22 +55,14 @@ export const light = createTheme({
     },
   },
   typography: {
-    h6: {
-      fontSize: '0.9rem',
-    },
+    ...typoHeaders,
     reverse: {
       fontSize: '0.9rem',
+      fontWeight: 500,
       color: 'rgba(255,255,255,0.9)',
     },
   },
 });
-
-/*
-#121212
-#212121
-#303030
-#424242
- */
 
 const dark = createTheme({
   palette: {
@@ -114,14 +100,14 @@ const dark = createTheme({
     },
   },
   typography: {
-    h6: {
-      fontSize: '0.9rem',
-    },
+    ...typoHeaders,
     reverse: {
       fontSize: '0.9rem',
+      fontWeight: 500,
       color: '#212121',
     },
   },
 });
+
 export const themeLight = responsiveFontSizes(light);
 export const themeDark = responsiveFontSizes(dark);

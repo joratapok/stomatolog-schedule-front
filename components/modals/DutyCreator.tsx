@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import {parse} from 'date-fns';
 import {
-  Modal,
-  Box,
   Typography,
   FormControl,
   InputLabel,
@@ -10,7 +8,6 @@ import {
   MenuItem,
   FormHelperText,
 } from '@mui/material';
-import {CloseButton} from '../UI/buttons/CloseButton';
 import {useAppSelector} from '../../hooks/redux';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import {MuiInput} from '../UI/EventInput';
@@ -21,18 +18,8 @@ import {useEventsData} from '../../hooks/useEventsData';
 import {useCreateDutyShiftMutation} from '../../services/events.api';
 import {IDutyShift} from '../../models/IEvents';
 import {stringDateCreator} from '../../helpers/stringDateCreator';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 800,
-  minWidth: 300,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-};
+import {ModalBase} from './ModalBase';
+import {TypoContent} from '../UI/typography/TypoContent';
 
 type Props = {
   isVisible: boolean;
@@ -102,117 +89,105 @@ export const DutyCreator: React.FC<Props> = React.memo(
       }
     }, [isSuccess]);
     return (
-      <Modal
-        open={isVisible}
-        onClose={(e, reason) => {
-          if (reason === 'backdropClick') {
-            return;
-          }
-          closeModal();
-        }}
-      >
-        <Box sx={style}>
-          <Typography>Кабинет: {cabinetName}</Typography>
+      <ModalBase isVisible={isVisible} closeModal={closeModal}>
+        <TypoContent sx={{mt: 4, mb: 2}}>Кабинет: {cabinetName}</TypoContent>
 
-          <Controller
-            rules={{required: true}}
-            name={'doctor'}
-            control={control}
-            defaultValue={(doctors && doctors[0]?.id) ?? 0}
-            render={({field: {onChange, onBlur, value}}) => (
-              <SelectContainer>
-                <FormControl fullWidth>
-                  <InputLabel id="doctor-label">Врач</InputLabel>
-                  <Select
-                    labelId="doctor-label"
-                    id="doctor-select"
-                    onBlur={onBlur}
-                    value={value}
-                    label="Врач"
-                    onChange={(event) => {
-                      console.log('onChange doctor id ', event.target.value);
-                      onChange(event.target.value);
-                    }}
-                  >
-                    {doctors?.map((doctor) => (
-                      <MenuItem key={doctor.id} value={doctor.id}>
-                        {doctor.lastName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </SelectContainer>
-            )}
-          />
-
-          <Controller
-            rules={{required: true, pattern: /[\d]{2}:[\d]{2}/}}
-            name={'dateStart'}
-            control={control}
-            defaultValue={'09:00'}
-            render={({field: {onChange, onBlur, value}}) => (
-              <FormControl variant={'outlined'} fullWidth>
-                <InputLabel htmlFor="timeStart-select-label">
-                  Время начала
-                </InputLabel>
-                <MuiInput
-                  required
-                  fullWidth
-                  autoComplete={'off'}
-                  label={'Время начала'}
-                  id="timeStart-select-label"
-                  onChange={onChange}
-                  value={value}
-                  error={!!errors.dateStart}
+        <Controller
+          rules={{required: true}}
+          name={'doctor'}
+          control={control}
+          defaultValue={(doctors && doctors[0]?.id) ?? 0}
+          render={({field: {onChange, onBlur, value}}) => (
+            <SelectContainer>
+              <FormControl fullWidth>
+                <InputLabel id="doctor-label">Врач</InputLabel>
+                <Select
+                  labelId="doctor-label"
+                  id="doctor-select"
                   onBlur={onBlur}
-                  autoCapitalize={'none'}
-                  inputComponent={TimeMaskInput as any}
-                />
-              </FormControl>
-            )}
-          />
-
-          <Controller
-            rules={{required: true, pattern: /[\d]{2}:[\d]{2}/}}
-            name={'dateFinish'}
-            control={control}
-            defaultValue={'17:00'}
-            render={({field: {onChange, onBlur, value}}) => (
-              <FormControl variant={'outlined'} fullWidth>
-                <InputLabel htmlFor="timeFinish-select-label">
-                  Время завершения
-                </InputLabel>
-                <MuiInput
-                  required
-                  fullWidth
-                  autoComplete={'off'}
-                  label={'Время начала'}
-                  id="timeFinish-select-label"
-                  onChange={onChange}
                   value={value}
-                  error={!!errors.dateFinish}
-                  onBlur={onBlur}
-                  autoCapitalize={'none'}
-                  inputComponent={TimeMaskInput as any}
-                />
+                  label="Врач"
+                  onChange={(event) => {
+                    onChange(event.target.value);
+                  }}
+                >
+                  {doctors?.map((doctor) => (
+                    <MenuItem key={doctor.id} value={doctor.id}>
+                      {doctor.lastName}
+                    </MenuItem>
+                  ))}
+                </Select>
               </FormControl>
-            )}
-          />
+            </SelectContainer>
+          )}
+        />
 
-          <SubmitButton
-            fullWidth
-            onClick={handleSubmit(onSubmit)}
-            loading={isLoading}
-            variant={'text'}
-          >
-            Создать смену
-          </SubmitButton>
-          <FormHelperText hidden={!isError} error={true}>
-            {'Ошибка'}
-          </FormHelperText>
-          <CloseButton onCloseRequest={closeModal} />
-        </Box>
-      </Modal>
+        <Controller
+          rules={{required: true, pattern: /[\d]{2}:[\d]{2}/}}
+          name={'dateStart'}
+          control={control}
+          defaultValue={'09:00'}
+          render={({field: {onChange, onBlur, value}}) => (
+            <FormControl variant={'outlined'} fullWidth>
+              <InputLabel htmlFor="timeStart-select-label">
+                Время начала
+              </InputLabel>
+              <MuiInput
+                required
+                fullWidth
+                autoComplete={'off'}
+                label={'Время начала'}
+                id="timeStart-select-label"
+                onChange={onChange}
+                value={value}
+                error={!!errors.dateStart}
+                onBlur={onBlur}
+                autoCapitalize={'none'}
+                inputComponent={TimeMaskInput as any}
+              />
+            </FormControl>
+          )}
+        />
+
+        <Controller
+          rules={{required: true, pattern: /[\d]{2}:[\d]{2}/}}
+          name={'dateFinish'}
+          control={control}
+          defaultValue={'17:00'}
+          render={({field: {onChange, onBlur, value}}) => (
+            <FormControl variant={'outlined'} fullWidth>
+              <InputLabel htmlFor="timeFinish-select-label">
+                Время завершения
+              </InputLabel>
+              <MuiInput
+                required
+                fullWidth
+                autoComplete={'off'}
+                label={'Время начала'}
+                id="timeFinish-select-label"
+                onChange={onChange}
+                value={value}
+                error={!!errors.dateFinish}
+                onBlur={onBlur}
+                autoCapitalize={'none'}
+                inputComponent={TimeMaskInput as any}
+              />
+            </FormControl>
+          )}
+        />
+
+        <SubmitButton
+          fullWidth
+          onClick={handleSubmit(onSubmit)}
+          loading={isLoading}
+          variant={'text'}
+        >
+          Создать смену
+        </SubmitButton>
+        <FormHelperText hidden={!isError} error={true}>
+          {'Ошибка'}
+        </FormHelperText>
+      </ModalBase>
     );
   }
 );

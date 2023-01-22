@@ -1,7 +1,7 @@
 import {FetchArgs} from '@reduxjs/toolkit/query';
 import {api} from './rtkBaseApi';
 import {IClinic, IDutyShift} from '../models/IEvents';
-import {ICreateEvent} from '../models/events/ICreateEvent';
+import {ICreateEvent, IPatchEvent} from '../models/events/ICreateEvent';
 
 export const eventsApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -20,6 +20,14 @@ export const eventsApi = api.injectEndpoints({
         url: 'api/events/create/',
         method: 'POST',
         body,
+      }),
+      invalidatesTags: ['events'],
+    }),
+    patchEvent: build.mutation<IPatchEvent, any>({
+      query: (body) => ({
+        url: `api/events/${body.id}/`,
+        method: 'PATCH',
+        body: body,
       }),
       invalidatesTags: ['events'],
     }),
@@ -48,4 +56,5 @@ export const {
   useCreateEventMutation,
   useCreateDutyShiftMutation,
   useDeleteEventMutation,
+  usePatchEventMutation,
 } = eventsApi;

@@ -1,6 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {InitCreateEvent} from '../../types/types';
 import {Cabinet, CabinetEvent} from '../../models/IEvents';
+import {IServiceList} from '../../models/IPriceList';
+import {EventStatus} from '../../models/events/ICreateEvent';
 
 const initialState = {
   newEvent: {
@@ -16,6 +18,7 @@ const initialState = {
     client: 0,
     doctor: 0,
   },
+  activeClinic: 0,
   tablePeriod: 30,
   isVisibleModal: false,
   isVisibleCreatorDuty: false,
@@ -29,9 +32,9 @@ const initialState = {
     id: 0,
     dateStart: '',
     dateFinish: '',
-    service: '',
-    status: '',
-    color: '',
+    services: [] as IServiceList,
+    comment: '',
+    status: EventStatus.NOT_CONFIRMED,
     client: {
       id: 0,
       firstName: '',
@@ -50,6 +53,9 @@ export const eventSlice = createSlice({
       state.newEvent.cabinet = action.payload.cabinet;
       state.newEvent.dateStart = action.payload.timeStart;
       state.newEvent.doctor = action.payload.doctor ?? 0;
+    },
+    setActiveClinic(state, action: PayloadAction<number>) {
+      state.activeClinic = action.payload;
     },
     setTablePeriod(state, action: PayloadAction<number>) {
       state.tablePeriod = action.payload;
@@ -74,7 +80,6 @@ export const eventSlice = createSlice({
       state,
       action: PayloadAction<{event: CabinetEvent; cabinet: string}>
     ) {
-      // @ts-ignore
       state.eventDetails = action.payload.event;
       state.cabinetDetails = action.payload.cabinet;
     },

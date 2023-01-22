@@ -1,98 +1,78 @@
-import React, {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {ChangeEvent, useEffect, useMemo, useState} from 'react';
 import {EventInput} from './UI/EventInput';
 import {debounce} from '../helpers/debounce';
-import {useGetCustomersQuery} from '../services/customers.api';
 import {SuggestionItemContainer, SuggestionsPaper} from './UI/SuggestionsPaper';
 import {Box, Typography} from '@mui/material';
-import {IClient} from '../models/IClient';
+
+export interface ISuggestionItem {
+  id: number;
+  firstEntry: string;
+  secondEntry?: string;
+}
 
 type Props = {
   onChange: (e: ChangeEvent) => void;
   onBlur: () => void;
   value: string;
   errors: boolean;
-  setClient: (client: IClient) => void;
+  query: string;
+  label: string;
+  newQuery: (query: string) => void;
+  suggestions: Array<ISuggestionItem>;
+  setSuggestion: (id: number) => void;
 };
-interface ItemProps extends IClient {
-  setClient: (client: IClient) => void;
+interface ItemProps extends ISuggestionItem {
+  setSuggestion: (id: number) => void;
 }
 
 const SuggestionItem: React.FC<ItemProps> = React.memo(
-  ({
-    lastName,
-    firstName,
-    middleName,
-    phone,
-    id,
-    dateOfBirth,
-    gender,
-    setClient,
-  }) => {
-    const setItemClient = () => {
-      setClient({
-        lastName,
-        firstName,
-        middleName,
-        phone,
-        id,
-        dateOfBirth,
-        gender,
-      });
-    };
+  ({id, firstEntry, secondEntry, setSuggestion}) => {
     return (
-      <SuggestionItemContainer onClick={() => setItemClient()}>
-        <Typography
-          variant={'h6'}
-        >{`${lastName} ${firstName} ${middleName}`}</Typography>
-        <Typography variant={'h6'}>{`${phone}`}</Typography>
+      <SuggestionItemContainer onClick={() => setSuggestion(id)}>
+        <Typography variant={'h6'}>{firstEntry}</Typography>
+        <Typography variant={'h6'}>{secondEntry}</Typography>
       </SuggestionItemContainer>
     );
   }
 );
 
 export const InputWithSuggestions: React.FC<Props> = React.memo(
-  ({onChange, onBlur, value, errors, setClient}) => {
-    const [lastNameQuery, setLastNameQuery] = useState('');
+  ({
+    onChange,
+    onBlur,
+    value,
+    errors,
+    query,
+    label,
+    newQuery,
+    suggestions,
+    setSuggestion,
+  }) => {
     const [showSuggestions, setShowSuggestions] = useState(false);
-
-    const {data} = useGetCustomersQuery(lastNameQuery, {skip: !lastNameQuery});
-    const suggestedClients = useMemo(() => {
-      return data ? data.slice(0, 5) : [];
-    }, [data]);
-
-    const newLastNameQuery = useCallback((text: string) => {
-      setLastNameQuery(text);
-    }, []);
     const debouncedLastNameQuery = useMemo(() => {
-      return debounce({fn: newLastNameQuery, delay: 1000});
-    }, [newLastNameQuery]);
+      return debounce({fn: newQuery, delay: 1000});
+    }, [newQuery]);
 
     useEffect(() => {
-      if (lastNameQuery.length > 1) {
+      if (query.length > 1) {
         setShowSuggestions(true);
       } else {
         setShowSuggestions(false);
       }
-    }, [lastNameQuery]);
+    }, [query]);
     return (
       <Box sx={{position: 'relative'}}>
         <EventInput
           required
           fullWidth
           autoComplete={'off'}
-          label={'Фамилия'}
+          label={label}
           onChange={(e) => {
             onChange(e);
             if (e.target.value.length >= 2) {
               debouncedLastNameQuery(e.target.value);
             } else if (!e.target.value.length) {
-              setLastNameQuery('');
+              newQuery('');
             }
           }}
           value={value}
@@ -108,11 +88,13 @@ export const InputWithSuggestions: React.FC<Props> = React.memo(
         />
         {showSuggestions && (
           <SuggestionsPaper>
-            {suggestedClients?.map((client) => (
+            {suggestions?.map((el) => (
               <SuggestionItem
-                key={client.id}
-                {...client}
-                setClient={setClient}
+                key={el.id}
+                id={el.id}
+                firstEntry={el.firstEntry}
+                secondEntry={el.secondEntry}
+                setSuggestion={setSuggestion}
               />
             ))}
           </SuggestionsPaper>

@@ -9,6 +9,8 @@ type Props = {
 };
 
 const ThemeButton = styled(IconButton)(({theme}) => ({
+  position: 'absolute',
+  right: '40px',
   marginRight: theme.spacing(2),
 }));
 

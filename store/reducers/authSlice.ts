@@ -43,7 +43,7 @@ export const authSlice = createSlice({
       state.error = action.payload;
     },
     [getAuth.fulfilled.type]: (state, action: PayloadAction<IProfile>) => {
-      state.accessToken = action.payload.token;
+      state.accessToken = action.payload.token ?? '';
       state.isReady = true;
       state.isAuth = true;
       state.error = '';

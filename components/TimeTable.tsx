@@ -32,6 +32,7 @@ import {DATE_FORMAT} from '../constants/dateFormat';
 import {Cabinet, CabinetEvent, IDutyShift} from '../models/IEvents';
 import {dateParser} from '../helpers/dateParser';
 import {doctorFinder} from '../helpers/doctorFinder';
+import {TypoContent} from './UI/typography/TypoContent';
 
 export const TimeTable = () => {
   const dispatch = useAppDispatch();
@@ -106,14 +107,14 @@ export const TimeTable = () => {
           <TableRow sx={{borderBottom: '0px solid'}}>
             <NoBorderCell sx={{width: '50px'}} />
             <NoBorderCell colSpan={12} align="center">
-              <Typography variant={'h5'}>{dateText}</Typography>
+              <Typography variant={'h4'}>{dateText}</Typography>
             </NoBorderCell>
           </TableRow>
           <TableRow sx={{border: '0px'}}>
             <NoBorderCell sx={{width: '50px'}} />
             {cabinets?.map((el) => (
               <NoBorderCell key={el.id} align="center">
-                <Typography variant={'h6'}>{el.name}</Typography>
+                <Typography variant={'h5'}>{el.name}</Typography>
                 <Tooltip placement={'right'} title="Добавить смену">
                   <IconButton
                     onClick={() => createDuty(el)}
@@ -132,7 +133,7 @@ export const TimeTable = () => {
             ({timeString, startInterval: start, finishInterval: end}) => (
               <EventRow key={timeString}>
                 <TimeCell align="center" component="th" scope="row">
-                  {timeString}
+                  <TypoContent>{timeString}</TypoContent>
                 </TimeCell>
                 {cabinets?.map((cabinet) => {
                   const dutyShift = cabinet.dutyShift.find(
@@ -153,9 +154,9 @@ export const TimeTable = () => {
                       key={`${cabinet.id}`}
                     >
                       {!!dutyShift && (
-                        <Typography>
+                        <TypoContent>
                           {doctorFinder(dutyShift.doctor, doctors)}
-                        </Typography>
+                        </TypoContent>
                       )}
                       {cabinet?.cabinetEvents?.map((el) => {
                         const eventStart = dateParser(el.dateStart);
@@ -186,7 +187,8 @@ export const TimeTable = () => {
                               }}
                             >
                               <Typography variant={'reverse'}>
-                                {`${el.client.lastName} ${textStart} - ${textFinish} ${el.service}`}
+                                {`${el.client.lastName} ${textStart} - ${textFinish} 
+                                ${el.comment}`}
                               </Typography>
                             </EventAbsolute>
                           );

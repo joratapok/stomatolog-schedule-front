@@ -9,5 +9,5 @@ export interface IProfile {
   image?: string;
   speciality?: string;
   clinic: number[];
-  token: string;
+  token?: string;
 }

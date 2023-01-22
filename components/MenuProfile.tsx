@@ -6,17 +6,24 @@ import {
   ListItemIcon,
   MenuItem,
   Tooltip,
+  Divider,
+  Typography,
 } from '@mui/material';
+import {useRouter} from 'next/router';
 import {Settings, Logout} from '@mui/icons-material';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {postLogout} from '../store/reducers/actionCreators';
+import {fullNameCreator} from '../helpers/fullNameCreator';
+import {EUrls} from '../types/urls';
 
 export const MenuProfile = () => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const router = useRouter();
   const isOpenMenu = Boolean(anchorEl);
-  const {firstName} = useAppSelector((state) => state.userSlice);
-
+  const {firstName, lastName, middleName} = useAppSelector(
+    (state) => state.userSlice
+  );
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -24,7 +31,10 @@ export const MenuProfile = () => {
     setAnchorEl(null);
   };
   const openSettings = () => {
-    console.log('open settings');
+    console.log('redirect to sett');
+    router
+      .push(EUrls.SETTINGS)
+      .catch((e) => console.log('redirect settings error', e));
   };
   const logout = () => {
     dispatch(postLogout());
@@ -32,7 +42,7 @@ export const MenuProfile = () => {
 
   return (
     <>
-      <Tooltip sx={{mr: 2}} title="Профиль">
+      <Tooltip sx={{position: 'absolute', right: 8}} title="Профиль">
         <IconButton
           onClick={handleClick}
           size="small"
@@ -56,7 +66,13 @@ export const MenuProfile = () => {
         anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
       >
         <MenuItem>
-          <ListItemIcon onClick={openSettings}>
+          <Typography>
+            {fullNameCreator(lastName, firstName, middleName)}
+          </Typography>
+        </MenuItem>
+        <Divider sx={{my: 0.5}} />
+        <MenuItem onClick={openSettings}>
+          <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
           Настройки

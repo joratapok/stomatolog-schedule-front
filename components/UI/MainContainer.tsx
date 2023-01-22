@@ -5,4 +5,5 @@ export const MainContainer = styled('div')(() => ({
   flexDirection: 'column',
   flex: '1 0 auto',
   height: '100vh',
+  overflow: 'auto',
 }));

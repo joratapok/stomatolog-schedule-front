@@ -1,3 +1,6 @@
+import {IPriceService, IServiceList} from './IPriceList';
+import {EventStatus} from './events/ICreateEvent';
+
 export interface Client {
   id: number;
   firstName: string;
@@ -17,8 +20,9 @@ export interface CabinetEvent {
   id: number;
   dateStart: string;
   dateFinish: string;
-  service: string;
-  status: string;
+  comment: string;
+  services: IServiceList;
+  status: EventStatus;
   color?: string;
   client: Client;
   doctor: number;

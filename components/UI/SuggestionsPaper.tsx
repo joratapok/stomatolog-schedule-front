@@ -11,8 +11,8 @@ export const SuggestionsPaper = styled('div')(({theme}) => ({
 
 export const SuggestionItemContainer = styled('div')(({theme}) => ({
   display: 'flex',
+  flexGrow: 1,
   justifyContent: 'space-between',
   margin: '4px 8px',
-  borderBottom: '1px solid gray',
   cursor: 'pointer',
 }));

@@ -1,7 +1,6 @@
 import {EventStatus} from '../models/events/ICreateEvent';
 
 export const statusSwitch = (status: string): string => {
-  console.log('status in switch', status, EventStatus.NOT_CONFIRMED);
   switch (status) {
     case EventStatus.NOT_CONFIRMED:
       return 'Не подтверждено';

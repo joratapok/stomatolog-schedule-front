@@ -1,9 +1,10 @@
 import {useMemo} from 'react';
-import {useGetEventsQuery} from '../services/events.api';
 import {format} from 'date-fns';
+import {useGetEventsQuery} from '../services/events.api';
 import {useAppSelector} from './redux';
 
 type ClinicInfo = {
+  title: string;
   phone: string;
   startOfTheDay: string;
   endOfTheDay: string;
@@ -12,24 +13,32 @@ type ClinicInfo = {
 export const useEventsData = () => {
   const {accessToken} = useAppSelector((state) => state.authSlice);
   const {date: currentDate} = useAppSelector((state) => state.calendarSlice);
+  const {activeClinic} = useAppSelector((state) => state.eventSlice);
   const dateForFetch = useMemo(() => {
     return format(new Date(currentDate), 'dd-MM-yyyy');
   }, [currentDate]);
   const {data, refetch} = useGetEventsQuery(dateForFetch, {skip: !accessToken});
+  const clinic = useMemo(() => {
+    if (activeClinic) {
+      return data?.find((c) => c.id === activeClinic);
+    } else {
+      return data && data[0];
+    }
+  }, [activeClinic, data]);
   const cabinets = useMemo(() => {
-    return data && data[0]?.cabinets;
-  }, [data]);
+    return clinic?.cabinets ?? [];
+  }, [data, clinic]);
   const doctors = useMemo(() => {
-    return (data && data[0]?.doctors) ?? [];
-  }, [data]);
+    return clinic?.doctors.filter((d) => d.clinic.includes(clinic.id)) ?? [];
+  }, [data, clinic]);
   const clinicInfo: ClinicInfo | undefined = useMemo(() => {
-    const clinic = data && data[0];
     if (!clinic) return;
     return {
+      title: clinic.title,
       phone: clinic.phone,
       startOfTheDay: clinic.startOfTheDay,
       endOfTheDay: clinic.endOfTheDay,
     };
-  }, [data]);
-  return {data, cabinets, doctors, clinicInfo, refetch};
+  }, [data, clinic]);
+  return {data, clinic, cabinets, doctors, clinicInfo, refetch};
 };

@@ -22,7 +22,6 @@ import {IAuthReq} from '../models/IAuth';
 import {EUrls} from '../types/urls';
 
 const SignIn = () => {
-  console.log('sign in');
   const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
@@ -35,7 +34,6 @@ const SignIn = () => {
     formState: {errors},
   } = useForm<IAuthReq>();
   const onSubmit: SubmitHandler<IAuthReq> = (data) => {
-    console.log('submit', data);
     dispatch(postSignIn(data));
   };
   const handleClickShowPassword = () => {

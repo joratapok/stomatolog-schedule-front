@@ -7,6 +7,7 @@ type Props = {
 };
 
 export const EventCell = styled(TableCell)<Props>(({theme, isonduty}) => ({
+  minWidth: '140px',
   position: 'relative',
   borderSizing: 'border-box',
   borderBottom: '1px solid',

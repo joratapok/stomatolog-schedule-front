@@ -9,11 +9,11 @@ type Props = {
 
 const IconButtonContainer = styled(IconButton)(({theme}) => ({
   position: 'absolute',
-  top: theme.spacing(1),
-  right: theme.spacing(1),
+  top: theme.spacing(3),
+  right: theme.spacing(3),
 }));
 
-export const CloseButton: React.FC<Props> = ({onCloseRequest}) => {
+export const CloseButton: React.FC<Props> = ({onCloseRequest}, props) => {
   return (
     <IconButtonContainer
       aria-label="close"

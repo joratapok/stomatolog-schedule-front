@@ -1,9 +1,20 @@
 import React, {useCallback} from 'react';
-import {Box, Button, Typography} from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
 import {eventSlice} from '../store/reducers/eventSlice';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {PaperCenter} from './UI/PaperCenter';
 import {ContainerInline} from './UI/ContainerInline';
+import {SelectContainer} from './UI/SelectContainer';
+import {useEventsData} from '../hooks/useEventsData';
+import {ChoiceClinic} from './UI/ChoiceClinic';
 
 type ItemProps = {
   period: number;
@@ -47,6 +58,8 @@ export const TablePeriodChanger = () => {
           />
         ))}
       </Box>
+
+      <ChoiceClinic />
     </PaperCenter>
   );
 };
