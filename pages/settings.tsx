@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import {ListItemText, MenuItem, MenuList, Paper} from '@mui/material';
-import {ClinicInfo} from '../components/ClinicInfo';
-import {CabinetsInfo} from '../components/CabinetsInfo';
-import {DoctorsInfo} from '../components/DoctorsInfo';
-import {SettingsModals} from '../components/SettingsModals';
+import {SettingsModals} from '@box/widgets/settingsModals/SettingsModals';
+import {ClinicInfo} from '@box/feature/clinicInfo';
+import {CabinetsInfo} from '@box/feature/cabinetInfo';
+import {DoctorsInfo} from '@box/feature/doctorsInfo';
+import {ClientInfo} from '@box/feature/clientInfo';
 
 enum MenuItems {
   CLINIC,
@@ -46,7 +47,7 @@ const Settings = () => {
           {activeItem === MenuItems.CLINIC && <ClinicInfo />}
           {activeItem === MenuItems.CABINETS && <CabinetsInfo />}
           {activeItem === MenuItems.STUFF && <DoctorsInfo />}
-          {activeItem === MenuItems.CLIENTS && <DoctorsInfo />}
+          {activeItem === MenuItems.CLIENTS && <ClientInfo />}
         </Paper>
       </Grid>
       <SettingsModals />

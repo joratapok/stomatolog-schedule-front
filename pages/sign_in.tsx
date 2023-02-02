@@ -9,17 +9,19 @@ import {
   InputAdornment,
   InputLabel,
 } from '@mui/material';
-import {FormContainer} from '../components/UI/FormContainer';
-import {AuthInput} from '../components/UI/AuthInput';
-import {SubmitButton} from '../components/UI/buttons/SubmitButton';
-import {ContainerInline} from '../components/UI/ContainerInline';
-import {ContainerCenter} from '../components/UI/ContainerCenter';
-import {ContainerCenterGrow} from '../components/UI/ContainerCenterGrow';
-import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {postSignIn} from '../store/reducers/actionCreators';
-import {IAuthReq} from '../models/IAuth';
+import {
+  ContainerCenterGrow,
+  ContainerCenter,
+  ContainerInline,
+  SubmitButton,
+  AuthInput,
+  FormContainer,
+} from '@box/shared/ui';
+import {useAppDispatch, useAppSelector} from '@box/shared/store/hooks';
+import {postSignIn} from '@box/shared/store/reducers';
+import {IAuthReq} from '@box/shared/models';
 
-import {EUrls} from '../types/urls';
+import {EUrls} from '@box/shared/types/urls';
 
 const SignIn = () => {
   const dispatch = useAppDispatch();

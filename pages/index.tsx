@@ -1,9 +1,9 @@
 import type {NextPage} from 'next';
 import Grid from '@mui/material/Unstable_Grid2';
-import {SCalendar} from '../components/Calendar';
-import {TimeTable} from '../components/TimeTable';
-import {TablePeriodChanger} from '../components/TablePeriodChanger';
-import {ModalsKeeper} from '../components/ModalsKeeper';
+import {TimeTable} from '@box/widgets/timeTable';
+import {TablePeriodChanger} from '@box/widgets/tablePeriodChanger';
+import {SCalendar} from '@box/feature/calendar';
+import {ModalsKeeper} from '@box/widgets/modalsKeeper';
 
 /*
   xs, extra-small: 0px

@@ -4,11 +4,12 @@ import {Provider} from 'react-redux';
 import type {AppProps} from 'next/app';
 import {ThemeProvider} from '@mui/material/styles';
 import {CssBaseline} from '@mui/material';
-import Layout from '../components/Layout';
-import {EThemeType} from '../types/theme';
-import {themeDark, themeLight} from '../config/themes';
-import {setupStore} from '../store/store';
-import {AuthTokenSetter} from '../api/AuthTokenSetter';
+
+import Layout from '@box/app/layout/Layout';
+import {themeDark, themeLight} from '@box/app/config/themes';
+import {AuthTokenSetter} from '@box/feature/authSetter';
+import {setupStore} from '@box/shared/store/store';
+import {EThemeType} from '@box/shared/types/theme';
 
 const store = setupStore();
 setupListeners(store.dispatch);
