@@ -4,6 +4,7 @@ import {IMask, IMaskInput} from 'react-imask';
 interface CustomProps {
   onChange: (event: {target: {name: string; value: string}}) => void;
   name: string;
+  error: boolean;
 }
 
 export const PhoneMaskInput = React.forwardRef<HTMLElement, CustomProps>(

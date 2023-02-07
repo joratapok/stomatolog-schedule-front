@@ -23,8 +23,12 @@ const Settings = () => {
     setActiveItem(item);
   };
   return (
-    <Grid container xs={12} spacing={{sm: 1, md: 2, lg: 3}}>
-      <Grid xs={12} sm={2} sx={{minWidth: '300px', maxWidth: '600px'}}>
+    <Grid container xs={12} spacing={{sm: 1, md: 2}}>
+      <Grid
+        xs={12}
+        sm={2}
+        sx={{minWidth: {lg: '250px', sm: '200px'}, maxWidth: '600px', mb: 2}}
+      >
         <Paper>
           <MenuList>
             <MenuItem onClick={() => menuHandler(MenuItems.CLINIC)}>

@@ -13,6 +13,8 @@ import {IDoctor} from '@box/shared/models';
 import {SxProps} from '@mui/system';
 import {useAppDispatch} from '@box/shared/store/hooks';
 import {ESettingsModals, settingSlice} from '@box/shared/store/reducers';
+import {usePatchProfileMutation} from '@box/shared/store/services';
+import {ActivateButton} from '@box/shared/ui/buttons/ActivateButton';
 
 interface Props {
   staff: IDoctor[];
@@ -23,10 +25,14 @@ interface Props {
 export const StaffTable: FC<Props> = React.memo(({staff, title, sx}) => {
   const dispatch = useAppDispatch();
   const {setModal, setCurrentStaff} = settingSlice.actions;
+  const [patchProfile, {isLoading, isSuccess, isError, originalArgs}] =
+    usePatchProfileMutation();
   const openDetailsModal = (person: IDoctor) => {
-    console.log('set detail modal');
     dispatch(setCurrentStaff(person));
     dispatch(setModal(ESettingsModals.DETAIL_STUFF));
+  };
+  const deactivateProfile = (id: number, isActive: boolean) => {
+    patchProfile({id, isActive});
   };
   return (
     <TableService sx={sx} title={title} aria-label="stuff table">
@@ -35,10 +41,16 @@ export const StaffTable: FC<Props> = React.memo(({staff, title, sx}) => {
           <LowCell align={'center'}>
             <TypoContent>ФИО</TypoContent>
           </LowCell>
-          <LowCell align={'center'}>
+          <LowCell
+            sx={{display: {xs: 'none', sm: 'table-cell'}}}
+            align={'center'}
+          >
             <TypoContent>Специальность</TypoContent>
           </LowCell>
-          <LowCell align={'center'}>
+          <LowCell
+            sx={{display: {xs: 'none', md: 'table-cell'}}}
+            align={'center'}
+          >
             <TypoContent>Телефон</TypoContent>
           </LowCell>
           <LowCell />
@@ -46,27 +58,63 @@ export const StaffTable: FC<Props> = React.memo(({staff, title, sx}) => {
       </TableHead>
       <TableBody>
         {staff.map((doctor) => (
-          <BServiceRow key={doctor.id} onClick={() => openDetailsModal(doctor)}>
+          <BServiceRow
+            pointer={'pointer'}
+            key={doctor.id}
+            onClick={() => openDetailsModal(doctor)}
+          >
             <LowCell align={'left'}>
-              <TypoContent>{`${doctor.lastName} ${doctor.firstName} ${doctor.middleName}`}</TypoContent>
+              <TypoContent isDisabled={!doctor.isActive}>
+                {`${doctor.lastName} ${doctor.firstName} ${doctor.middleName} `}
+                {!doctor.isActive && '(деактивирован)'}
+              </TypoContent>
             </LowCell>
-            <LowCell align={'center'}>
-              <TypoContent>{doctor.speciality}</TypoContent>
+            <LowCell
+              sx={{display: {xs: 'none', sm: 'table-cell'}}}
+              align={'center'}
+            >
+              <TypoContent isDisabled={!doctor.isActive}>
+                {doctor.role === 'doctor' ? doctor.speciality : 'Администратор'}
+              </TypoContent>
             </LowCell>
-            <LowCell align={'center'}>
-              <TypoContent>{doctor.phone}</TypoContent>
+            <LowCell
+              sx={{display: {xs: 'none', md: 'table-cell'}}}
+              align={'center'}
+            >
+              <TypoContent isDisabled={!doctor.isActive}>
+                {doctor.phone}
+              </TypoContent>
             </LowCell>
             <LowCell align={'center'}>
               <Box
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
-                  justifyContent: 'center',
+                  justifyContent: 'flex-end',
                   alignItems: 'center',
                 }}
               >
-                <EditButton size={'small'} onClick={() => {}} />
-                <DeactivateButton size={'small'} onClick={() => {}} />
+                {doctor.isActive && (
+                  <EditButton size={'small'} onClick={() => {}} />
+                )}
+
+                {doctor.isActive ? (
+                  <DeactivateButton
+                    loading={originalArgs?.id === doctor.id && isLoading}
+                    size={'small'}
+                    onClick={() =>
+                      deactivateProfile(doctor.id, !doctor.isActive)
+                    }
+                  />
+                ) : (
+                  <ActivateButton
+                    loading={originalArgs?.id === doctor.id && isLoading}
+                    size={'small'}
+                    onClick={() =>
+                      deactivateProfile(doctor.id, !doctor.isActive)
+                    }
+                  />
+                )}
               </Box>
             </LowCell>
           </BServiceRow>

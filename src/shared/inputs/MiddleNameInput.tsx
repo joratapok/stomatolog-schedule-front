@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Controller} from 'react-hook-form';
-import {EventInput} from '@box/shared/ui';
+import {EventInput, InputContainer} from '@box/shared/ui';
 
 type Props = {
   control: any;
@@ -15,16 +15,18 @@ export const MiddleNameInput: FC<Props> = ({control, error}) => {
       control={control}
       defaultValue={''}
       render={({field: {onChange, onBlur, value}}) => (
-        <EventInput
-          required
-          fullWidth
-          label={'Отчество'}
-          onChange={onChange}
-          value={value}
-          error={error}
-          onBlur={onBlur}
-          autoCapitalize={'none'}
-        />
+        <InputContainer>
+          <EventInput
+            required
+            fullWidth
+            label={'Отчество'}
+            onChange={onChange}
+            value={value}
+            error={error}
+            onBlur={onBlur}
+            autoCapitalize={'none'}
+          />
+        </InputContainer>
       )}
     />
   );

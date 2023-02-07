@@ -10,4 +10,19 @@ export interface IProfile {
   speciality?: string;
   clinic: number[];
   token?: string;
+  isActive: boolean;
+}
+
+export interface IProfileResponse {
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  role?: string;
+  dateOfBirth?: string;
+  phone?: string;
+  image?: string;
+  speciality?: string;
+  clinic?: string[];
+  isActive?: boolean;
 }

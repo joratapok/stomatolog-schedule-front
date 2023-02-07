@@ -1,4 +1,4 @@
-import {IProfile} from '@box/shared/models';
+import {IPatchDoctor, IProfile} from '@box/shared/models';
 import {api} from './rtkBaseApi';
 
 export const profileApi = api.injectEndpoints({
@@ -12,8 +12,16 @@ export const profileApi = api.injectEndpoints({
         }),
         invalidatesTags: ['events'],
       }),
+      patchProfile: build.mutation<IPatchDoctor, any>({
+        query: (body) => ({
+          url: `api/profile/${body.id}/`,
+          method: 'PATCH',
+          body,
+        }),
+        invalidatesTags: ['events'],
+      }),
     };
   },
 });
 
-export const {useCreateProfileMutation} = profileApi;
+export const {useCreateProfileMutation, usePatchProfileMutation} = profileApi;

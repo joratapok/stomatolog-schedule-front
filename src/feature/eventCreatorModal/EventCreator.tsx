@@ -47,6 +47,7 @@ export const EventCreator: React.FC<Props> = React.memo(
       useCreateEventMutation();
     const {
       setValue,
+      setError,
       control,
       handleSubmit,
       reset: resetForm,
@@ -89,6 +90,7 @@ export const EventCreator: React.FC<Props> = React.memo(
       setValue('dateOfBirth', client.dateOfBirth);
       setValue('phone', client.phone);
     }, []);
+
     const onSubmit: SubmitHandler<FormState> = useCallback(
       (data) => {
         const dateFinish = format(
@@ -120,10 +122,23 @@ export const EventCreator: React.FC<Props> = React.memo(
     );
 
     useEffect(() => {
+      if (error && 'data' in error) {
+        const responseErrors = Object.entries(
+          error.data as Record<keyof FormState, string[]>
+        );
+        responseErrors.forEach(([key, val]) => {
+          // @ts-ignore
+          setError(key, {message: val[0]});
+        });
+      }
+    }, [error]);
+
+    useEffect(() => {
       if (isSuccess) {
         closeModal();
       }
     }, [isSuccess]);
+
     return (
       <ModalBase isVisible={isVisible} closeModal={closeModal}>
         <TypoContent>Дата: {dateText}</TypoContent>
@@ -131,10 +146,10 @@ export const EventCreator: React.FC<Props> = React.memo(
         <TypoContent sx={{mb: 2}}>Время: {time}</TypoContent>
 
         <DoctorInput
-          doctor={doctor}
+          doctor={doctor || doctors[0]?.id}
           doctors={doctors}
           control={control}
-          error={!!errors.doctor}
+          error={errors.doctor}
         />
         <DateFinishInput control={control} error={!!errors.dateFinish} />
         <CommentInput control={control} error={!!errors.comment} />
@@ -148,9 +163,9 @@ export const EventCreator: React.FC<Props> = React.memo(
         />
         <FirstNameInput control={control} error={!!errors.firstName} />
         <MiddleNameInput control={control} error={!!errors.middleName} />
-        <DateOfBirthInput control={control} error={!!errors.dateOfBirth} />
+        <DateOfBirthInput control={control} error={errors.dateOfBirth} />
         <GenderInput control={control} disabled={!!clientId} />
-        <PhoneInput control={control} error={!!errors.phone} />
+        <PhoneInput control={control} error={errors.phone} />
 
         <SubmitButton
           fullWidth

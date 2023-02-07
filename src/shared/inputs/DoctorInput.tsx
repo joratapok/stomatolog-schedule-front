@@ -1,14 +1,14 @@
 import React, {FC} from 'react';
-import {Controller} from 'react-hook-form';
+import {Control, Controller, FieldError} from 'react-hook-form';
 import {FormControl, InputLabel, MenuItem, Select} from '@mui/material';
 import {IDoctor} from '@box/shared/models';
-import {SelectContainer} from '@box/shared/ui';
+import {ErrorMessage, SelectContainer} from '@box/shared/ui';
 
 type Props = {
   doctor: number;
   doctors: IDoctor[];
-  control: any;
-  error: boolean;
+  control: Control<any>;
+  error: FieldError | undefined;
 };
 
 export const DoctorInput: FC<Props> = ({control, doctor, doctors, error}) => {
@@ -21,9 +21,12 @@ export const DoctorInput: FC<Props> = ({control, doctor, doctors, error}) => {
       render={({field: {onChange, onBlur, value}}) => (
         <SelectContainer>
           <FormControl fullWidth>
-            <InputLabel id="doctor-label">Врач</InputLabel>
+            <InputLabel error={!!error} id="doctor-label">
+              Врач
+            </InputLabel>
             <Select
-              error={error}
+              required
+              error={!!error}
               labelId="doctor-label"
               id="doctor-select"
               onBlur={onBlur}
@@ -39,6 +42,7 @@ export const DoctorInput: FC<Props> = ({control, doctor, doctors, error}) => {
                 </MenuItem>
               ))}
             </Select>
+            <ErrorMessage isError={!!error?.message} message={error?.message} />
           </FormControl>
         </SelectContainer>
       )}

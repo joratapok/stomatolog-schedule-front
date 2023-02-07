@@ -74,6 +74,7 @@ const dark = createTheme({
     text: {
       primary: 'rgba(255,255,255,0.7)',
       secondary: 'rgba(255,255,255,0.5)',
+      disabled: 'rgba(255,255,255,0.2)',
     },
     primary: {
       light: '#DBB2FF',

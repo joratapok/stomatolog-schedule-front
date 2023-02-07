@@ -20,7 +20,6 @@ export const StaffDetailModal: React.FC<Props> = React.memo(
           Детальная информация
         </Typography>
         <Box sx={{mt: 2}}>
-          <Typography>Телефон: {currentStaff.username}</Typography>
           <Typography>{`${currentStaff.lastName} ${currentStaff.firstName} ${currentStaff.middleName}`}</Typography>
           <Typography>Специальность: {currentStaff.speciality}</Typography>
           <Typography>Дата рождения: {currentStaff.dateOfBirth}</Typography>

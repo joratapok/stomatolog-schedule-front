@@ -25,7 +25,7 @@ export const ChoiceClinic = () => {
           <FormControl size="small" fullWidth>
             <InputLabel id="doctor-label">Клиника</InputLabel>
             <Select
-              labelId="doctor-label"
+              labelId="clinic-select-label"
               id="doctor-select"
               value={clinic?.id ?? 0}
               label="Клиника"

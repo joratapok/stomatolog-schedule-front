@@ -15,11 +15,13 @@ export const DoctorsInfo = () => {
   };
   return (
     <Box sx={{p: 2}}>
-      <Tooltip placement={'right'} title="Добавить сотрудника">
-        <IconButton onClick={addStuff} color="primary" aria-label="add stuff">
-          <AddCircleOutlineIcon fontSize={'large'} />
-        </IconButton>
-      </Tooltip>
+      <Box display="flex" justifyContent="flex-end" sx={{mb: 1}}>
+        <Tooltip placement={'left'} title="Добавить сотрудника">
+          <IconButton onClick={addStuff} color="primary" aria-label="add stuff">
+            <AddCircleOutlineIcon fontSize={'large'} />
+          </IconButton>
+        </Tooltip>
+      </Box>
 
       <StaffTable staff={doctors} title={'Врачи'} />
       <StaffTable
@@ -27,15 +29,6 @@ export const DoctorsInfo = () => {
         title={'Администраторы'}
         sx={{mt: 2}}
       />
-
-      {doctors.map((doctor) => (
-        <Box key={doctor.id} sx={{mt: 2}}>
-          <Typography>{`${doctor.lastName} ${doctor.firstName} ${doctor.middleName}`}</Typography>
-          <Typography>Специальность {doctor.speciality}</Typography>
-          <Typography>Дата рождения{doctor.dateOfBirth}</Typography>
-          <Typography>Телефон{doctor.phone}</Typography>
-        </Box>
-      ))}
     </Box>
   );
 };

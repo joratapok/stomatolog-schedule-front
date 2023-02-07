@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Controller} from 'react-hook-form';
-import {EventInput} from '@box/shared/ui';
+import {EventInput, InputContainer} from '@box/shared/ui';
 
 type Props = {
   control: any;
@@ -14,16 +14,18 @@ export const CommentInput: FC<Props> = ({control, error}) => {
       name={'comment'}
       control={control}
       render={({field: {onChange, onBlur, value}}) => (
-        <EventInput
-          fullWidth
-          autoComplete={'off'}
-          label={'Комментарий'}
-          onChange={onChange}
-          value={value}
-          error={error}
-          onBlur={onBlur}
-          autoCapitalize={'none'}
-        />
+        <InputContainer>
+          <EventInput
+            fullWidth
+            autoComplete={'off'}
+            label={'Комментарий'}
+            onChange={onChange}
+            value={value}
+            error={error}
+            onBlur={onBlur}
+            autoCapitalize={'none'}
+          />
+        </InputContainer>
       )}
     />
   );

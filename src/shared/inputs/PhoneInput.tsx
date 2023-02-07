@@ -1,24 +1,26 @@
 import React, {FC} from 'react';
-import {Controller} from 'react-hook-form';
+import {Controller, FieldError} from 'react-hook-form';
 import {FormControl, InputLabel} from '@mui/material';
-import {MuiInput} from '@box/shared/ui';
+import {ErrorMessage, MuiInput} from '@box/shared/ui';
 import {PhoneMaskInput} from '@box/shared/inputs';
 
 type Props = {
   control: any;
-  error: boolean;
+  error: FieldError | undefined;
 };
 
 export const PhoneInput: FC<Props> = ({control, error}) => {
   return (
     <Controller
-      rules={{required: true}}
+      rules={{required: true, pattern: /\d\s\(\d{3}\)-\d{3}-\d{4}/}}
       name={'phone'}
       control={control}
       defaultValue={''}
       render={({field: {onChange, onBlur, value}}) => (
-        <FormControl variant={'outlined'} fullWidth>
-          <InputLabel htmlFor="phone-select-label">Телефон</InputLabel>
+        <FormControl sx={{mb: 1.5}} variant={'outlined'} fullWidth>
+          <InputLabel error={!!error} htmlFor="phone-select-label">
+            Телефон
+          </InputLabel>
           <MuiInput
             required
             fullWidth
@@ -27,11 +29,12 @@ export const PhoneInput: FC<Props> = ({control, error}) => {
             id="phone-select-label"
             onChange={onChange}
             value={value}
-            error={error}
+            error={!!error}
             onBlur={onBlur}
             autoCapitalize={'none'}
             inputComponent={PhoneMaskInput as any}
           />
+          <ErrorMessage isError={!!error?.message} message={error?.message} />
         </FormControl>
       )}
     />

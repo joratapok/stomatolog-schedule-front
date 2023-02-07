@@ -1,10 +1,10 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Typography} from '@mui/material';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {ClinicsInput} from '@box/entities/multiSelectClinics';
 import {useEventsData} from '@box/shared/hooks/useEventsData';
 import {useCreateProfileMutation} from '@box/shared/store/services';
-import {ModalBase, SubmitButton} from '@box/shared/ui';
+import {ErrorMessage, ModalBase, SubmitButton} from '@box/shared/ui';
 import {
   DateOfBirthInput,
   FirstNameInput,
@@ -14,6 +14,7 @@ import {
   PhoneInput,
   SpecialityInput,
   UserNameInput,
+  RoleInput,
 } from '@box/shared/inputs';
 
 type Props = {
@@ -27,21 +28,25 @@ type FormState = {
   firstName: string;
   lastName: string;
   middleName: string;
-  role: 'doctor';
+  role: 'doctor' | 'administrator';
   dateOfBirth: string;
   phone: string;
-  speciality: string;
+  speciality?: string;
   clinic: Array<number>;
 };
 
 export const Ui: React.FC<Props> = React.memo(({isVisible, onCloseRequest}) => {
+  const [isDoctor, setIsDoctor] = useState(true);
   const {
+    setError,
     control,
     handleSubmit,
     reset: resetForm,
     formState: {errors},
-  } = useForm<FormState>();
-  const [createProfile, {isLoading, isError, isSuccess, reset}] =
+  } = useForm<FormState>({
+    defaultValues: {role: 'doctor'},
+  });
+  const [createProfile, {isLoading, isError, error, isSuccess, reset}] =
     useCreateProfileMutation();
   const {data, clinic} = useEventsData();
   const clinics = useMemo(() => {
@@ -53,9 +58,20 @@ export const Ui: React.FC<Props> = React.memo(({isVisible, onCloseRequest}) => {
     onCloseRequest();
   };
   const onSubmit: SubmitHandler<FormState> = (data) => {
-    console.log('onSubmit ', data);
-    createProfile(data);
+    createProfile({...data, isActive: true});
   };
+  useEffect(() => {
+    if (error && 'data' in error) {
+      const responseErrors = Object.entries(
+        error.data as Record<keyof FormState, string[]>
+      );
+      responseErrors.forEach(([key, val]) => {
+        // @ts-ignore
+        setError(key, {message: val[0]});
+      });
+    }
+  }, [error]);
+
   useEffect(() => {
     if (isSuccess) {
       reset();
@@ -65,17 +81,20 @@ export const Ui: React.FC<Props> = React.memo(({isVisible, onCloseRequest}) => {
   return (
     <ModalBase isVisible={isVisible} closeModal={closeModal}>
       <Typography sx={{mb: 4, mt: 4}} textAlign={'center'}>
-        Добавить врача
+        Добавить сотрудника
       </Typography>
+      <RoleInput control={control} setIsDoctor={setIsDoctor} />
+      {isDoctor && (
+        <SpecialityInput control={control} error={!!errors.speciality} />
+      )}
 
       <UserNameInput control={control} error={!!errors.username} />
-      <PasswordInput control={control} error={!!errors.password} />
+      <PasswordInput control={control} error={errors.password} />
       <LastNameInput control={control} error={!!errors.lastName} />
       <FirstNameInput control={control} error={!!errors.firstName} />
       <MiddleNameInput control={control} error={!!errors.middleName} />
-      <DateOfBirthInput control={control} error={!!errors.dateOfBirth} />
-      <PhoneInput control={control} error={!!errors.phone} />
-      <SpecialityInput control={control} error={!!errors.phone} />
+      <DateOfBirthInput control={control} error={errors.dateOfBirth} />
+      <PhoneInput control={control} error={errors.phone} />
       <ClinicsInput
         clinics={clinics}
         control={control}
@@ -83,9 +102,16 @@ export const Ui: React.FC<Props> = React.memo(({isVisible, onCloseRequest}) => {
         defaultValue={clinic?.id ? [clinic.id] : undefined}
       />
 
+      <ErrorMessage
+        isError={isError}
+        message={'Ошибка при создании сотрудникка'}
+        inCenter
+      />
+
       <SubmitButton
         fullWidth
         sx={{mt: 2}}
+        loading={isLoading}
         onClick={handleSubmit(onSubmit)}
         variant={'text'}
       >

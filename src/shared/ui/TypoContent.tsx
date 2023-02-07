@@ -2,12 +2,21 @@ import {Typography} from '@mui/material';
 import React, {FC, PropsWithChildren} from 'react';
 import {TypographyProps} from '@mui/material/Typography/Typography';
 
-export const TypoContent: FC<PropsWithChildren & TypographyProps> = ({
+type Props = {
+  isDisabled?: boolean;
+};
+
+export const TypoContent: FC<Props & PropsWithChildren & TypographyProps> = ({
   children,
+  isDisabled,
   ...props
 }) => {
   return (
-    <Typography variant={'h6'} {...props}>
+    <Typography
+      sx={{color: isDisabled ? 'text.disabled' : 'text.primary'}}
+      variant={'h6'}
+      {...props}
+    >
       {children}
     </Typography>
   );
