@@ -20,22 +20,24 @@ export const TimeTableBody: FC<Props> = ({
   createEvent,
   showModalEventDetails,
 }) => {
-  const {tablePeriod: period} = useAppSelector((state) => state.eventSlice);
+  const {tablePeriod: period, roundTheClock} = useAppSelector(
+    (state) => state.eventSlice
+  );
   const {date: currentDate} = useAppSelector((state) => state.calendarSlice);
   const {cabinets, clinicInfo, doctors} = useEventsData();
   const {timeFrom, timeUntil} = useMemo(() => {
     const timeFrom = parse(
-      clinicInfo?.startOfTheDay ?? '08:00',
+      roundTheClock ? '00:00' : clinicInfo?.startOfTheDay ?? '08:00',
       'HH:mm',
       new Date(currentDate)
     );
     const timeUntil = parse(
-      clinicInfo?.endOfTheDay ?? '17:00',
+      roundTheClock ? '23:59' : clinicInfo?.endOfTheDay ?? '17:00',
       'HH:mm',
       new Date(currentDate)
     );
     return {timeFrom, timeUntil};
-  }, [currentDate, clinicInfo]);
+  }, [currentDate, clinicInfo, roundTheClock]);
 
   const minutesWorked = differenceInMinutes(timeUntil, timeFrom);
   const countRows = Math.ceil(minutesWorked / period);

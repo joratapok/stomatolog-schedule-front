@@ -1,10 +1,10 @@
 import React, {useCallback} from 'react';
-import {Box, Button, Typography} from '@mui/material';
+import {Box, Button, FormControlLabel, Checkbox} from '@mui/material';
 
 import {ChoiceClinic} from '@box/entities/choiceClinic';
 import {eventSlice} from '@box/shared/store/reducers';
 import {useAppDispatch, useAppSelector} from '@box/shared/store/hooks';
-import {PaperCenter, ContainerInline} from '@box/shared/ui';
+import {PaperCenter, ContainerInline, TypoContent} from '@box/shared/ui';
 
 type ItemProps = {
   period: number;
@@ -28,25 +28,40 @@ const Item: React.FC<ItemProps> = ({period, setPeriod, isActive}) => {
 
 export const TablePeriodChanger = () => {
   const dispatch = useAppDispatch();
-  const {tablePeriod: currentPeriod} = useAppSelector(
+  const {tablePeriod: currentPeriod, roundTheClock} = useAppSelector(
     (state) => state.eventSlice
   );
-  const {setTablePeriod} = eventSlice.actions;
+  const {setTablePeriod, setRoundTheClock} = eventSlice.actions;
   const setPeriod = useCallback((period: number) => {
     dispatch(setTablePeriod(period));
   }, []);
+  const changeRoundTheClockMode = () => {
+    dispatch(setRoundTheClock(!roundTheClock));
+  };
   return (
     <PaperCenter>
-      <Typography variant={'h6'}>Шаг сетки расписания</Typography>
+      <TypoContent variant={'h6'}>Шаг сетки расписания</TypoContent>
       <Box component={ContainerInline}>
-        {periods.map((el) => (
+        {periods.map((period) => (
           <Item
-            key={el}
-            period={el}
+            key={period}
+            period={period}
             setPeriod={setPeriod}
-            isActive={el === currentPeriod}
+            isActive={period === currentPeriod}
           />
         ))}
+      </Box>
+
+      <Box sx={{mt: 2}}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={roundTheClock}
+              onChange={changeRoundTheClockMode}
+            />
+          }
+          label={'Круглосуточный режим'}
+        />
       </Box>
 
       <ChoiceClinic />

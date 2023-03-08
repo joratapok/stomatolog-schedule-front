@@ -28,6 +28,7 @@ const initialState = {
   },
   activeClinic: 0,
   tablePeriod: 30,
+  roundTheClock: false,
   isVisibleModal: false,
   isVisibleCreatorDuty: false,
   isVisibleEventDetails: false,
@@ -67,6 +68,9 @@ export const eventSlice = createSlice({
     },
     setTablePeriod(state, action: PayloadAction<number>) {
       state.tablePeriod = action.payload;
+    },
+    setRoundTheClock(state, action: PayloadAction<boolean>) {
+      state.roundTheClock = action.payload;
     },
     showModal(state) {
       state.isVisibleModal = true;
