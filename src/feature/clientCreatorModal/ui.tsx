@@ -12,9 +12,9 @@ import {
   GenderInput,
 } from '@box/shared/inputs';
 import {settingSlice} from '@box/shared/store/reducers';
-import {useAppDispatch, useAppSelector} from '@box/shared/store/hooks';
+import {useAppDispatch} from '@box/shared/store/hooks';
 import {DiscountInput} from '@box/shared/inputs/DiscountInput';
-import {useEventsData} from '@box/shared/hooks';
+import {useEventsData, useInFormErrorSetter} from '@box/shared/hooks';
 
 type Props = {
   isVisible: boolean;
@@ -53,6 +53,8 @@ export const ClientCreatorModal: FC<Props> = ({isVisible, onCloseRequest}) => {
     resetForm();
     onCloseRequest();
   };
+
+  useInFormErrorSetter<FormState>({error, setError});
   useEffect(() => {
     if (isSuccess) {
       dispatch(setCurrentClient(data?.id ?? 0));
@@ -60,17 +62,6 @@ export const ClientCreatorModal: FC<Props> = ({isVisible, onCloseRequest}) => {
       closeModal();
     }
   }, [isSuccess]);
-  useEffect(() => {
-    if (error && 'data' in error) {
-      const responseErrors = Object.entries(
-        error.data as Record<keyof FormState, string[]>
-      );
-      responseErrors.forEach(([key, val]) => {
-        // @ts-ignore
-        setError(key, {message: val[0]});
-      });
-    }
-  }, [error]);
   return (
     <ModalBase isVisible={isVisible} closeModal={closeModal}>
       <Typography sx={{mb: 3, mt: 5, mx: 4}} textAlign={'center'}>
