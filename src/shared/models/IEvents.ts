@@ -1,5 +1,5 @@
 import {IServiceList} from './IPriceList';
-import {IClient} from '@box/shared/models/IClient';
+import {ICreateClient} from '@box/shared/models/IClient';
 
 export enum EventStatus {
   NOT_CONFIRMED = 'not_confirmed',
@@ -17,8 +17,9 @@ export interface CabinetEvent {
   services: IServiceList;
   status: EventStatus;
   color?: string;
-  client: IClient;
+  client: ICreateClient;
   doctor: number;
+  invoice: string | null;
 }
 
 export interface IPatchEvent {
@@ -30,7 +31,7 @@ export interface IPatchEvent {
   color?: string;
   cabinet?: number;
   doctor?: number;
-  client?: IClient | number;
+  client?: ICreateClient | number;
 }
 
 export interface ICreateEvent {
@@ -42,5 +43,5 @@ export interface ICreateEvent {
   color?: string;
   cabinet: number;
   doctor: number;
-  client: IClient | number;
+  client: ICreateClient | number;
 }

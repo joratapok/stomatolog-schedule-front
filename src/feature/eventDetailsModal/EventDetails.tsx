@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import {useRouter} from 'next/router';
 import {Box} from '@mui/material';
 import {SubmitHandler, useForm} from 'react-hook-form';
 
@@ -8,7 +9,7 @@ import {
   useDeleteEventMutation,
   usePatchEventMutation,
 } from '@box/shared/store/services';
-import {useAppSelector} from '@box/shared/store/hooks';
+import {useAppDispatch, useAppSelector} from '@box/shared/store/hooks';
 import {fullNameCreator} from '@box/shared/helpers';
 import {useEventsData} from '@box/shared/hooks';
 import {EventStatus} from '@box/shared/models/IEvents';
@@ -16,6 +17,9 @@ import {ModalBase, SubmitButton, TypoContent} from '@box/shared/ui';
 import {useServiceHandler} from './hooks/useServiceHandler';
 import {EventStatusInput, ToothNumInput} from '@box/shared/inputs';
 import {pdfGetter} from '@box/shared/api/pdfGetter';
+import {MenuItems, settingSlice} from '@box/shared/store/reducers';
+import {EUrls} from '@box/shared/types';
+import {TypoLink} from '@box/shared/ui/TypeLink';
 
 type Props = {
   isVisible: boolean;
@@ -29,6 +33,9 @@ type FormState = {
 
 export const EventDetails: React.FC<Props> = React.memo(
   ({isVisible, onCloseRequest}) => {
+    const router = useRouter();
+    const dispatch = useAppDispatch();
+    const {setActiveItem, setCurrentClient} = settingSlice.actions;
     const [isPDFGetter, setIsPDFGetter] = useState(false);
     const {
       eventDetails: {
@@ -94,8 +101,18 @@ export const EventDetails: React.FC<Props> = React.memo(
       pdfGetter(id).catch((e) => console.log('get pdf error ', e));
     };
 
+    const goToClient = (id: number) => {
+      dispatch(setActiveItem(MenuItems.CLIENTS));
+      dispatch(setCurrentClient(id));
+      closeModal();
+      router
+        .push(EUrls.SETTINGS)
+        .catch((e) => console.log('redirect sign_in error', e));
+    };
+
     useEffect(() => {
       if (isPDFGetter) {
+        console.log('handle submit in use efect ');
         handleSubmit(onSubmit)();
       }
     }, [isPDFGetter]);
@@ -129,10 +146,12 @@ export const EventDetails: React.FC<Props> = React.memo(
         <TypoContent>Начало: {dateStart}</TypoContent>
         <TypoContent>Конец: {dateFinish}</TypoContent>
         <TypoContent>Комментарий: {comment}</TypoContent>
-        <TypoContent sx={{mb: 2}}>
-          Клиент:
-          {`  ${client.lastName} ${client.firstName} ${client.middleName}`}
-        </TypoContent>
+        <Box sx={{display: 'flex', mb: 2}}>
+          <TypoContent sx={{mr: 1}}>Клиент:</TypoContent>
+          <TypoLink onClick={() => goToClient(client.id)}>
+            {`${client.lastName} ${client.firstName} ${client.middleName}`}
+          </TypoLink>
+        </Box>
 
         <EventStatusInput control={control} defaultValue={status} />
         <ToothNumInput
@@ -163,6 +182,7 @@ export const EventDetails: React.FC<Props> = React.memo(
             Сохранить
           </SubmitButton>
           <SubmitButton
+            disabled={!localServices.length}
             loading={isLoading && isPDFGetter}
             onClick={() => setIsPDFGetter(true)}
             variant={'text'}

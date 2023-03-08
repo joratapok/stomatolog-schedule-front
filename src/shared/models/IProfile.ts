@@ -1,9 +1,14 @@
+export enum ERoles {
+  administrator = 'administrator',
+  doctor = 'doctor',
+}
+
 export interface IProfile {
   username: string;
   firstName: string;
   lastName: string;
   middleName: string;
-  role: string;
+  role: ERoles;
   dateOfBirth: string;
   phone: string;
   image?: string;
@@ -11,18 +16,4 @@ export interface IProfile {
   clinic: number[];
   token?: string;
   isActive: boolean;
-}
-
-export interface IProfileResponse {
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  middleName?: string;
-  role?: string;
-  dateOfBirth?: string;
-  phone?: string;
-  image?: string;
-  speciality?: string;
-  clinic?: string[];
-  isActive?: boolean;
 }

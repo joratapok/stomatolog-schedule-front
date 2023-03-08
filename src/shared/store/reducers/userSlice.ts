@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IProfile} from '@box/shared/models';
+import {ERoles, IProfile} from '@box/shared/models';
 import {getAuth} from './actionCreators';
 
 const initialState: IProfile = {
@@ -7,13 +7,14 @@ const initialState: IProfile = {
   firstName: '',
   lastName: '',
   middleName: '',
-  role: '',
+  role: ERoles.doctor,
   dateOfBirth: '',
   phone: '',
   image: '',
   speciality: '',
   clinic: [],
   token: '',
+  isActive: true,
 };
 
 export const userSlice = createSlice({
@@ -33,6 +34,7 @@ export const userSlice = createSlice({
       state.speciality = action.payload.speciality;
       state.clinic = action.payload.clinic;
       state.token = action.payload.token;
+      state.isActive = action.payload.isActive;
     },
   },
 });

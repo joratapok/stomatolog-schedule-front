@@ -5,9 +5,16 @@ import {EventInput, InputContainer} from '@box/shared/ui';
 type Props = {
   control: any;
   error: boolean;
+  defaultValue?: string;
+  disabled?: boolean;
 };
 
-export const MiddleNameInput: FC<Props> = ({control, error}) => {
+export const MiddleNameInput: FC<Props> = ({
+  control,
+  error,
+  defaultValue,
+  disabled,
+}) => {
   return (
     <Controller
       rules={{required: true, maxLength: 100}}
@@ -19,6 +26,8 @@ export const MiddleNameInput: FC<Props> = ({control, error}) => {
           <EventInput
             required
             fullWidth
+            disabled={disabled}
+            defaultValue={defaultValue}
             label={'Отчество'}
             onChange={onChange}
             value={value}

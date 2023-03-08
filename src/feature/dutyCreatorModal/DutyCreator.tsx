@@ -1,15 +1,29 @@
-import React, {useEffect} from 'react';
-import {parse} from 'date-fns';
-import {FormControl, InputLabel, FormHelperText} from '@mui/material';
-import {Controller, SubmitHandler, useForm} from 'react-hook-form';
-import {TimeMaskInput} from '@box/shared/inputs/MaskInput';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {isAfter, parse} from 'date-fns';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import {CircularProgress, IconButton, Tooltip} from '@mui/material';
+import {SubmitHandler, useForm} from 'react-hook-form';
 import {useAppSelector} from '@box/shared/store/hooks';
 import {useEventsData} from '@box/shared/hooks';
-import {useCreateDutyShiftMutation} from '@box/shared/store/services';
+import {
+  useCreateDutyShiftMutation,
+  useDeleteDutyShiftMutation,
+} from '@box/shared/store/services';
 import {IDutyShift} from '@box/shared/models';
-import {stringDateCreator} from '@box/shared/helpers';
-import {DoctorInput} from '@box/shared/inputs';
-import {MuiInput, ModalBase, TypoContent, SubmitButton} from '@box/shared/ui';
+import {
+  doctorNameById,
+  stringDateCreator,
+  timeFromDate,
+} from '@box/shared/helpers';
+import {DoctorInput, TimeInput} from '@box/shared/inputs';
+import {
+  ErrorMessage,
+  ModalBase,
+  SubmitButton,
+  TypoContent,
+} from '@box/shared/ui';
+import {Box} from '@mui/system';
+import {checkDutyOverlap} from '@box/shared/helpers/checkDutyOverlap';
 
 type Props = {
   isVisible: boolean;
@@ -20,6 +34,7 @@ type FormState = {
   dateStart: string;
   dateFinish: string;
   doctor: number;
+  root?: string;
 };
 
 export const DutyCreator: React.FC<Props> = React.memo(
@@ -28,11 +43,14 @@ export const DutyCreator: React.FC<Props> = React.memo(
       newDuty: {cabinetName, cabinetId},
     } = useAppSelector((state) => state.eventSlice);
     const {date: currentDate} = useAppSelector((state) => state.calendarSlice);
-    const {doctors} = useEventsData();
+    const {doctors, cabinets} = useEventsData();
     const [createDuty, {isLoading, isError, error, isSuccess, reset}] =
       useCreateDutyShiftMutation();
+    const [deleteDuty, {isLoading: isLoadingDelete, originalArgs}] =
+      useDeleteDutyShiftMutation();
     const {
       setError,
+      clearErrors,
       control,
       handleSubmit,
       reset: resetForm,
@@ -42,6 +60,14 @@ export const DutyCreator: React.FC<Props> = React.memo(
       resetForm();
       onCloseRequest();
     };
+    const duties = useMemo(() => {
+      return cabinets?.find((el) => el.id === cabinetId)?.dutyShift ?? [];
+    }, [cabinetId, cabinets]);
+
+    const clearErrorsRequest = useCallback(() => {
+      clearErrors('root');
+    }, [clearErrors]);
+
     const onSubmit: SubmitHandler<FormState> = (data) => {
       const dutyInfo: IDutyShift = {
         cabinet: cabinetId,
@@ -49,6 +75,8 @@ export const DutyCreator: React.FC<Props> = React.memo(
         dateFinish: '',
         doctor: data.doctor,
       };
+      let isOverlap = false;
+      let isOverHead = false;
       try {
         const dateFrom = parse(data.dateStart, 'HH:mm', new Date(currentDate));
         const dateFinish = parse(
@@ -58,11 +86,27 @@ export const DutyCreator: React.FC<Props> = React.memo(
         );
         dutyInfo.dateStart = stringDateCreator(dateFrom);
         dutyInfo.dateFinish = stringDateCreator(dateFinish);
+
+        isOverHead = !isAfter(dateFinish, dateFrom);
+        isOverlap = Boolean(checkDutyOverlap(duties, dateFrom, dateFinish));
       } catch {
-        setError('dateStart', {type: 'custom', message: 'Неправильный формат'});
-        console.log('pars err');
+        setError('root', {
+          type: 'custom',
+          message: 'Ошибка при формировании даты',
+        });
       }
-      if (dutyInfo.dateStart && dutyInfo.dateFinish) {
+
+      if (isOverHead) {
+        setError('root', {
+          type: 'custom',
+          message: 'Некорректно задано время',
+        });
+      } else if (isOverlap) {
+        setError('root', {
+          type: 'custom',
+          message: 'Это время уже занято',
+        });
+      } else if (dutyInfo.dateStart && dutyInfo.dateFinish) {
         createDuty(dutyInfo);
       } else {
         console.log('date error');
@@ -85,58 +129,27 @@ export const DutyCreator: React.FC<Props> = React.memo(
           error={errors.doctor}
         />
 
-        <Controller
-          rules={{required: true, pattern: /[\d]{2}:[\d]{2}/}}
+        <TimeInput
           name={'dateStart'}
-          control={control}
+          label={'Время начала'}
           defaultValue={'09:00'}
-          render={({field: {onChange, onBlur, value}}) => (
-            <FormControl sx={{mb: 1.5}} variant={'outlined'} fullWidth>
-              <InputLabel htmlFor="timeStart-select-label">
-                Время начала
-              </InputLabel>
-              <MuiInput
-                required
-                fullWidth
-                autoComplete={'off'}
-                label={'Время начала'}
-                id="timeStart-select-label"
-                onChange={onChange}
-                value={value}
-                error={!!errors.dateStart}
-                onBlur={onBlur}
-                autoCapitalize={'none'}
-                inputComponent={TimeMaskInput as any}
-              />
-            </FormControl>
-          )}
+          control={control}
+          error={errors.dateStart}
+          clearErrors={clearErrorsRequest}
+        />
+        <TimeInput
+          name={'dateFinish'}
+          label={'Время завершения'}
+          defaultValue={'17:00'}
+          control={control}
+          error={errors.dateFinish}
+          clearErrors={clearErrorsRequest}
         />
 
-        <Controller
-          rules={{required: true, pattern: /\d{2}:\d{2}/}}
-          name={'dateFinish'}
-          control={control}
-          defaultValue={'17:00'}
-          render={({field: {onChange, onBlur, value}}) => (
-            <FormControl sx={{mb: 1.5}} variant={'outlined'} fullWidth>
-              <InputLabel htmlFor="timeFinish-select-label">
-                Время завершения
-              </InputLabel>
-              <MuiInput
-                required
-                fullWidth
-                autoComplete={'off'}
-                label={'Время начала'}
-                id="timeFinish-select-label"
-                onChange={onChange}
-                value={value}
-                error={!!errors.dateFinish}
-                onBlur={onBlur}
-                autoCapitalize={'none'}
-                inputComponent={TimeMaskInput as any}
-              />
-            </FormControl>
-          )}
+        <ErrorMessage
+          isError={isError || Boolean(errors?.root?.message)}
+          message={errors?.root?.message ?? 'Ошибка при создании смены'}
+          inCenter
         />
 
         <SubmitButton
@@ -145,11 +158,55 @@ export const DutyCreator: React.FC<Props> = React.memo(
           loading={isLoading}
           variant={'text'}
         >
-          Создать смену
+          Создать новую смену
         </SubmitButton>
-        <FormHelperText hidden={!isError} error={true}>
-          {'Ошибка'}
-        </FormHelperText>
+
+        {Boolean(duties.length) && (
+          <>
+            <TypoContent>Смены на сегодня</TypoContent>
+
+            {duties.map((el) => {
+              const isShowProgres = isLoadingDelete && originalArgs === el.id;
+              return (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                  key={el.id}
+                >
+                  <TypoContent>
+                    {`${timeFromDate(el.dateStart)} - ${timeFromDate(
+                      el.dateFinish
+                    )} - ${doctorNameById(doctors, el.doctor)}`}
+                  </TypoContent>
+
+                  {isShowProgres && <CircularProgress />}
+
+                  {!isShowProgres && (
+                    <Tooltip
+                      sx={{ml: 2}}
+                      placement={'right'}
+                      title="удалить смену"
+                    >
+                      <IconButton
+                        onClick={() => {
+                          clearErrors('root');
+                          deleteDuty(el.id);
+                        }}
+                        color="error"
+                        aria-label="delete duty"
+                      >
+                        <CloseRoundedIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Box>
+              );
+            })}
+          </>
+        )}
       </ModalBase>
     );
   }

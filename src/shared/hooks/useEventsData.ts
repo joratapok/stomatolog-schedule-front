@@ -4,6 +4,7 @@ import {useGetEventsQuery} from '@box/shared/store/services';
 import {useAppSelector} from '@box/shared/store/hooks';
 
 type ClinicInfo = {
+  id: number;
   title: string;
   phone: string;
   startOfTheDay: string;
@@ -39,11 +40,12 @@ export const useEventsData = () => {
   const clinicInfo: ClinicInfo | undefined = useMemo(() => {
     if (!clinic) return;
     return {
+      id: clinic.id,
       title: clinic.title,
       phone: clinic.phone,
       startOfTheDay: clinic.startOfTheDay,
       endOfTheDay: clinic.endOfTheDay,
     };
-  }, [data, clinic]);
+  }, [clinic]);
   return {data, clinic, cabinets, doctors, administrators, clinicInfo, refetch};
 };

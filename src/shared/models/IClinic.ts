@@ -14,3 +14,10 @@ export interface IClinic {
   doctors: Array<IDoctor>;
   administrators: Array<IDoctor>;
 }
+
+export interface IPatchClinic {
+  id: number;
+  phone?: string;
+  startOfTheDay?: string;
+  endOfTheDay?: string;
+}

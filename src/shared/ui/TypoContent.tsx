@@ -13,7 +13,9 @@ export const TypoContent: FC<Props & PropsWithChildren & TypographyProps> = ({
 }) => {
   return (
     <Typography
-      sx={{color: isDisabled ? 'text.disabled' : 'text.primary'}}
+      sx={{
+        color: isDisabled ? 'text.disabled' : 'text.primary',
+      }}
       variant={'h6'}
       {...props}
     >

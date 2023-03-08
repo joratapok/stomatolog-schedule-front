@@ -6,7 +6,6 @@ import ru from 'date-fns/locale/ru';
 import {useAppDispatch, useAppSelector} from '@box/shared/store/hooks';
 import {calendarSlice} from '@box/shared/store/reducers';
 import {StyledCalendarV2} from './ui/StyledCalendarV2';
-// import {StyledCalendarContainer} from './UI/StyledCalendar';
 
 /*
   yyyy - 2022 yy - 22
@@ -30,17 +29,9 @@ export const SCalendar = () => {
   useEffect(() => {
     calendarHandler(new Date(date));
   }, []);
+
   return (
     <>
-      {/*<StyledCalendarContainer>*/}
-      {/*  <Calendar*/}
-      {/*    minDetail={'year'}*/}
-      {/*    showNeighboringMonth={true}*/}
-      {/*    locale={'ru-RU'}*/}
-      {/*    onChange={calendarHandler}*/}
-      {/*    value={new Date(date)}*/}
-      {/*  />*/}
-      {/*</StyledCalendarContainer>*/}
       <StyledCalendarV2>
         <Calendar
           minDetail={'year'}

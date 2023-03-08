@@ -32,7 +32,6 @@ export const MenuProfile = () => {
     setAnchorEl(null);
   };
   const openSettings = () => {
-    console.log('redirect to sett');
     router
       .push(EUrls.SETTINGS)
       .catch((e) => console.log('redirect settings error', e));

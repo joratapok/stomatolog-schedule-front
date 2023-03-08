@@ -1,3 +1,3 @@
 export * from './dateFormat';
 export * from './tableSize';
-export * from './toothCard';
+export * from './TOOTH_CARD';

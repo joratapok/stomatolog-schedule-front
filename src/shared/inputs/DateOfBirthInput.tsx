@@ -7,9 +7,10 @@ import {DateMaskInput} from '@box/shared/inputs';
 type Props = {
   control: any;
   error: FieldError | undefined;
+  disabled?: boolean;
 };
 
-export const DateOfBirthInput: FC<Props> = ({control, error}) => {
+export const DateOfBirthInput: FC<Props> = ({control, error, disabled}) => {
   return (
     <Controller
       rules={{required: true, pattern: /\d{4}-\d{2}-\d{2}/}}
@@ -24,6 +25,7 @@ export const DateOfBirthInput: FC<Props> = ({control, error}) => {
           <MuiInput
             required
             fullWidth
+            disabled={disabled}
             autoComplete={'off'}
             label={'Дата рождения'}
             id="date-select-label"

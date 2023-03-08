@@ -4,7 +4,7 @@ import {SelectContainer} from '@box/shared/ui';
 import {FormControl, InputLabel, MenuItem, Select} from '@mui/material';
 
 type Props = {
-  disabled: boolean;
+  disabled?: boolean;
   control: any;
 };
 

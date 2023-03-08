@@ -5,9 +5,10 @@ import {EventInput, InputContainer} from '@box/shared/ui';
 type Props = {
   control: any;
   error: boolean;
+  defaultValue?: string;
 };
 
-export const LastNameInput: FC<Props> = ({control, error}) => {
+export const LastNameInput: FC<Props> = ({control, error, defaultValue}) => {
   return (
     <Controller
       rules={{required: true, maxLength: 100}}
@@ -19,6 +20,7 @@ export const LastNameInput: FC<Props> = ({control, error}) => {
           <EventInput
             required
             fullWidth
+            defaultValue={defaultValue}
             label={'Фамилия'}
             onChange={onChange}
             value={value}

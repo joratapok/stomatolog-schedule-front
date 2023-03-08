@@ -14,3 +14,5 @@ export * from './DateFinishInput';
 export * from './DoctorInput';
 export * from './ToothNumInput';
 export * from './RoleInput';
+export * from './LastNameBaseInput';
+export * from './TimeInput';

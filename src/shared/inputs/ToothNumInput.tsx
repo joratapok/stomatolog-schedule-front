@@ -7,7 +7,7 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material';
-import {ToothCard} from '@box/shared/constants';
+import {TOOTH_CARD} from '@box/shared/constants';
 
 type Props = {
   toothNumber: number;
@@ -28,7 +28,7 @@ export const ToothNumInput: FC<Props> = ({toothNumber, onChangeRequest}) => {
             onChangeRequest(Number(event?.target?.value));
           }}
         >
-          {ToothCard.map((name) => (
+          {TOOTH_CARD.map((name) => (
             <MenuItem key={name} value={name}>
               {name}
             </MenuItem>

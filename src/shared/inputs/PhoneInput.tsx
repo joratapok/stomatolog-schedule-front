@@ -7,9 +7,10 @@ import {PhoneMaskInput} from '@box/shared/inputs';
 type Props = {
   control: any;
   error: FieldError | undefined;
+  disabled?: boolean;
 };
 
-export const PhoneInput: FC<Props> = ({control, error}) => {
+export const PhoneInput: FC<Props> = ({control, error, disabled}) => {
   return (
     <Controller
       rules={{required: true, pattern: /\d\s\(\d{3}\)-\d{3}-\d{4}/}}
@@ -24,6 +25,7 @@ export const PhoneInput: FC<Props> = ({control, error}) => {
           <MuiInput
             required
             fullWidth
+            disabled={disabled}
             autoComplete={'off'}
             label={'Телефон'}
             id="phone-select-label"

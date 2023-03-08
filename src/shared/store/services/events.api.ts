@@ -49,6 +49,15 @@ export const eventsApi = api.injectEndpoints({
       }),
       invalidatesTags: ['events'],
     }),
+    deleteDutyShift: build.mutation<{id: number}, any>({
+      query(id) {
+        return {
+          url: `api/events/duty-shift/${id}/`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['events'],
+    }),
   }),
 });
 
@@ -58,4 +67,5 @@ export const {
   useCreateDutyShiftMutation,
   useDeleteEventMutation,
   usePatchEventMutation,
+  useDeleteDutyShiftMutation,
 } = eventsApi;

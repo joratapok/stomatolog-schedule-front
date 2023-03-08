@@ -26,10 +26,6 @@ export const ServicesTable: FC<Props> = React.memo(
       }
       return services.reduce((acc, el) => {
         const toothPrice = parseFloat(el.dentalServices[0].price) * el.count;
-        // const toothPrice = el.dentalServices.reduce(
-        //   (a, e) => a + parseFloat(e.price) * e.count,
-        //   0
-        // );
         return acc + toothPrice;
       }, 0);
     }, [services]);
@@ -58,57 +54,55 @@ export const ServicesTable: FC<Props> = React.memo(
             </HServiceRow>
           </TableHead>
           <TableBody>
-            {services
-              // .sort((a, b) => a.toothNumber - b.toothNumber)
-              .map(({toothNumber, dentalServices, count}) => {
-                return dentalServices?.map((el, index) => (
-                  <BServiceRow key={`${el.id} ${index}`} sx={{border: '0px'}}>
-                    <LowCell align="left">
-                      <Typography variant={'h6'}>{toothNumber}</Typography>
-                    </LowCell>
-                    <LowCell align="left">
-                      <Typography variant={'h6'}>{el.title}</Typography>
-                    </LowCell>
-                    <LowCell align="center">
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <DecreaseButton
-                          size={'small'}
-                          onClick={() => {
-                            if (count > 1) {
-                              changeCounter(toothNumber, el.id, -1);
-                            } else {
-                              deleteService(toothNumber, el.id);
-                            }
-                          }}
-                        />
-                        <Typography variant={'h6'}>{count}</Typography>
-                        <AddButton
-                          size={'small'}
-                          onClick={() => changeCounter(toothNumber, el.id, 1)}
-                        />
-                      </Box>
-                    </LowCell>
-                    <LowCell align="center">
-                      <Typography noWrap variant={'h6'}>
-                        {`${parseFloat(el.price) * count} ₽`}
-                      </Typography>
-                    </LowCell>
-                    <LowCell align="right">
-                      <TrashButton
-                        onClick={() => deleteService(toothNumber, el.id)}
+            {services.map(({toothNumber, dentalServices, count}) => {
+              return dentalServices?.map((el, index) => (
+                <BServiceRow key={`${el.id} ${index}`} sx={{border: '0px'}}>
+                  <LowCell align="left">
+                    <Typography variant={'h6'}>{toothNumber}</Typography>
+                  </LowCell>
+                  <LowCell align="left">
+                    <Typography variant={'h6'}>{el.title}</Typography>
+                  </LowCell>
+                  <LowCell align="center">
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <DecreaseButton
                         size={'small'}
+                        onClick={() => {
+                          if (count > 1) {
+                            changeCounter(toothNumber, el.id, -1);
+                          } else {
+                            deleteService(toothNumber, el.id);
+                          }
+                        }}
                       />
-                    </LowCell>
-                  </BServiceRow>
-                ));
-              })}
+                      <Typography variant={'h6'}>{count}</Typography>
+                      <AddButton
+                        size={'small'}
+                        onClick={() => changeCounter(toothNumber, el.id, 1)}
+                      />
+                    </Box>
+                  </LowCell>
+                  <LowCell align="center">
+                    <Typography noWrap variant={'h6'}>
+                      {`${parseFloat(el.price) * count} ₽`}
+                    </Typography>
+                  </LowCell>
+                  <LowCell align="right">
+                    <TrashButton
+                      onClick={() => deleteService(toothNumber, el.id)}
+                      size={'small'}
+                    />
+                  </LowCell>
+                </BServiceRow>
+              ));
+            })}
             <BServiceRow>
               <LowCell colSpan={4} align="right">
                 <Typography variant={'h6'} fontWeight="bold" align="right">

@@ -53,7 +53,7 @@ export const MultiSelectClinics: React.FC<Props> = ({
   };
   return (
     <div>
-      <FormControl fullWidth sx={{minWidth: 300}}>
+      <FormControl fullWidth sx={{minWidth: 250}}>
         <InputLabel id="demo-multiple-name-label">Клиника</InputLabel>
         <Select
           required

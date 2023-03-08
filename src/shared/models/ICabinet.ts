@@ -7,3 +7,8 @@ export interface ICabinet {
   cabinetEvents: CabinetEvent[];
   dutyShift: IDutyShift[];
 }
+
+export interface ICabinetCreator {
+  clinic: number;
+  name: string;
+}

@@ -10,7 +10,12 @@ import {useEventsData} from '@box/shared/hooks';
 import {useCreateEventMutation} from '@box/shared/store/services';
 import {DATE_FORMAT} from '@box/shared/constants';
 import {dateParser} from '@box/shared/helpers';
-import {EventStatus, ICreateEvent, IClient} from '@box/shared/models';
+import {
+  EventStatus,
+  ICreateEvent,
+  IClient,
+  ICreateClient,
+} from '@box/shared/models';
 import {SubmitButton, TypoContent, ModalBase} from '@box/shared/ui';
 import {
   DateOfBirthInput,
@@ -29,7 +34,7 @@ type Props = {
   onCloseRequest: () => void;
 };
 
-type FormState = IClient & {
+type FormState = ICreateClient & {
   dateFinish: string;
   comment: string;
   status: EventStatus;
@@ -105,7 +110,7 @@ export const EventCreator: React.FC<Props> = React.memo(
           dateOfBirth: data.dateOfBirth,
           phone: data.phone,
         };
-        const client: IClient | number = clientId ? clientId : clientInfo;
+        const client: ICreateClient | number = clientId ? clientId : clientInfo;
         const eventData: ICreateEvent = {
           dateStart,
           dateFinish,
@@ -161,11 +166,27 @@ export const EventCreator: React.FC<Props> = React.memo(
           clientId={clientId}
           nullifyClient={nullifyClient}
         />
-        <FirstNameInput control={control} error={!!errors.firstName} />
-        <MiddleNameInput control={control} error={!!errors.middleName} />
-        <DateOfBirthInput control={control} error={errors.dateOfBirth} />
-        <GenderInput control={control} disabled={!!clientId} />
-        <PhoneInput control={control} error={errors.phone} />
+        <FirstNameInput
+          control={control}
+          error={!!errors.firstName}
+          disabled={Boolean(clientId)}
+        />
+        <MiddleNameInput
+          control={control}
+          error={!!errors.middleName}
+          disabled={Boolean(clientId)}
+        />
+        <DateOfBirthInput
+          control={control}
+          error={errors.dateOfBirth}
+          disabled={Boolean(clientId)}
+        />
+        <GenderInput control={control} disabled={Boolean(clientId)} />
+        <PhoneInput
+          control={control}
+          error={errors.phone}
+          disabled={Boolean(clientId)}
+        />
 
         <SubmitButton
           fullWidth
