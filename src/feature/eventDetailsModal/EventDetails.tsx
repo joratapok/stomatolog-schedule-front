@@ -112,7 +112,6 @@ export const EventDetails: React.FC<Props> = React.memo(
 
     useEffect(() => {
       if (isPDFGetter) {
-        console.log('handle submit in use efect ');
         handleSubmit(onSubmit)();
       }
     }, [isPDFGetter]);

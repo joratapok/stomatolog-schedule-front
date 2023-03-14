@@ -6,7 +6,7 @@ import ru from 'date-fns/locale/ru';
 
 import {ClientSuggestionsInput} from '@box/entities/clientSuggestions';
 import {useAppSelector} from '@box/shared/store/hooks';
-import {useEventsData} from '@box/shared/hooks';
+import {useEventsData, useInFormErrorSetter} from '@box/shared/hooks';
 import {useCreateEventMutation} from '@box/shared/store/services';
 import {DATE_FORMAT} from '@box/shared/constants';
 import {dateParser} from '@box/shared/helpers';
@@ -47,7 +47,7 @@ export const EventCreator: React.FC<Props> = React.memo(
     const {
       newEvent: {dateStart, cabinet, doctor},
     } = useAppSelector((state) => state.eventSlice);
-    const {doctors} = useEventsData();
+    const {doctors, clinic} = useEventsData();
     const [createEvent, {isLoading, isError, error, isSuccess}] =
       useCreateEventMutation();
     const {
@@ -109,6 +109,7 @@ export const EventCreator: React.FC<Props> = React.memo(
           gender: data.gender,
           dateOfBirth: data.dateOfBirth,
           phone: data.phone,
+          clinic: clinic?.id ?? 0,
         };
         const client: ICreateClient | number = clientId ? clientId : clientInfo;
         const eventData: ICreateEvent = {
@@ -126,18 +127,7 @@ export const EventCreator: React.FC<Props> = React.memo(
       [date, dateStart, cabinet, clientId]
     );
 
-    useEffect(() => {
-      if (error && 'data' in error) {
-        const responseErrors = Object.entries(
-          error.data as Record<keyof FormState, string[]>
-        );
-        responseErrors.forEach(([key, val]) => {
-          // @ts-ignore
-          setError(key, {message: val[0]});
-        });
-      }
-    }, [error]);
-
+    useInFormErrorSetter<FormState>({error, setError});
     useEffect(() => {
       if (isSuccess) {
         closeModal();
