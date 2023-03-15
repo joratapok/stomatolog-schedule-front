@@ -13,7 +13,7 @@ const Layout: React.FC<Props> = ({children, toggleTheme}) => {
     <MainContainer>
       <Header toggleTheme={toggleTheme} />
       <ContentContainer>{children}</ContentContainer>
-      <Footer />
+      {/*<Footer />*/}
     </MainContainer>
   );
 };

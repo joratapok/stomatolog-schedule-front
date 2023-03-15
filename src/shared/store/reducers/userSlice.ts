@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {ERoles, IProfile} from '@box/shared/models';
-import {getAuth} from './actionCreators';
+import {getAuth, postLogout} from './actionCreators';
 
 const initialState: IProfile = {
   username: '',
@@ -35,6 +35,9 @@ export const userSlice = createSlice({
       state.clinic = action.payload.clinic;
       state.token = action.payload.token;
       state.isActive = action.payload.isActive;
+    },
+    [postLogout.fulfilled.type]: () => {
+      return initialState;
     },
   },
 });

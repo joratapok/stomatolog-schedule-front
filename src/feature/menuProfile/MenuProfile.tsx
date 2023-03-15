@@ -42,7 +42,7 @@ export const MenuProfile = () => {
 
   return (
     <>
-      <Tooltip sx={{position: 'absolute', right: 8}} title="Профиль">
+      <Tooltip title="Профиль">
         <IconButton
           onClick={handleClick}
           size="small"
