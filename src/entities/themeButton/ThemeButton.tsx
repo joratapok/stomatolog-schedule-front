@@ -9,9 +9,7 @@ type Props = {
 };
 
 const ThemeButton = styled(IconButton)(({theme}) => ({
-  position: 'absolute',
-  right: '40px',
-  marginRight: theme.spacing(2),
+  marginRight: theme.spacing(1),
 }));
 
 export const ThemeToggle: React.FC<Props> = ({themeToggleRequest}) => {
