@@ -25,7 +25,7 @@ export const Header: React.FC<Props> = React.memo(({toggleTheme}) => {
             sx={{display: 'inline', textAlign: 'center', cursor: 'pointer'}}
             variant={'h4'}
           >
-            Header
+            Stom-Space
           </Typography>
         </ContainerInline>
         <Box

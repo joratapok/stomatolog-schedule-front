@@ -55,6 +55,11 @@ export const TeethPlan: FC<Props> = ({treatmentPlan, clientId}) => {
     [currentTooth, treatmentPlan]
   );
 
+  const clearButtonHandler = () => {
+    setCurrentPlan('');
+    setIsStateChanged(true);
+  };
+
   useEffect(() => {
     if (currentTooth) {
       setCurrentPlan(currentToothPlan);
@@ -103,10 +108,7 @@ export const TeethPlan: FC<Props> = ({treatmentPlan, clientId}) => {
             rows={3}
           />
           <Box display={'flex'} justifyContent={'flex-end'} sx={{mt: 1}}>
-            <Button
-              disabled={!currentPlan.length}
-              onClick={() => setCurrentPlan('')}
-            >
+            <Button disabled={!currentPlan.length} onClick={clearButtonHandler}>
               Очистить
             </Button>
             <LoadingButton
