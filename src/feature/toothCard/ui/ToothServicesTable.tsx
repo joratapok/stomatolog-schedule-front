@@ -1,6 +1,9 @@
 import React, {FC, useCallback, useMemo} from 'react';
+import {format} from 'date-fns';
+import ru from 'date-fns/locale/ru';
+import {useRouter} from 'next/router';
 import {Link, TableBody, TableHead, TableRow} from '@mui/material';
-import {sameDateFinder} from '@box/feature/toothCard/lib/sameDateFinder';
+import {addPortInURL, sameDateFinder} from '@box/feature/toothCard';
 import {ITeeth} from '@box/shared/models';
 import {
   HServiceRow,
@@ -8,13 +11,10 @@ import {
   TableService,
   TypoContent,
   ToothCardCell,
+  TypoLink,
 } from '@box/shared/ui';
-import {TypoLink} from '@box/shared/ui/TypeLink';
-import {useRouter} from 'next/router';
 import {EUrls} from '@box/shared/types';
 import {dateParser} from '@box/shared/helpers';
-import {format} from 'date-fns';
-import ru from 'date-fns/locale/ru';
 import {useAppDispatch} from '@box/shared/store/hooks';
 import {calendarSlice} from '@box/shared/store/reducers';
 
@@ -112,9 +112,11 @@ export const ToothServicesTable: FC<Props> = ({toothInfo}) => {
                 <ToothCardCell align="center" rowSpan={el.rowspan}>
                   {el.invoice && (
                     <Link
-                      onClick={() => console.log(`link ${el.invoice}`)}
+                      onClick={() =>
+                        console.log(`link ${addPortInURL(el.invoice)}`)
+                      }
                       rel="noreferrer"
-                      href={el.invoice}
+                      href={addPortInURL(el.invoice)}
                       target="_blank"
                     >
                       <TypoLink variant={'h6'}>pdf</TypoLink>
