@@ -16,6 +16,7 @@ export * from './PaperCenter';
 export * from './SelectContainer';
 export * from './SuggestionsPaper';
 export * from './TypoContent';
+export * from './TypeLink';
 export * from './ErrorMessage';
 export * from './InputContainer';
 export * from './buttons/SubmitButton';
