@@ -62,7 +62,7 @@ const SignIn = () => {
               rules={{required: true}}
               name={'username'}
               control={control}
-              defaultValue={''}
+              defaultValue={'test_user'}
               render={({field: {onChange, onBlur, value}}) => (
                 <FormControl variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-login">
@@ -84,7 +84,7 @@ const SignIn = () => {
               rules={{required: true}}
               name={'password'}
               control={control}
-              defaultValue={''}
+              defaultValue={'qwe123!@#'}
               render={({field: {onChange, onBlur, value}}) => (
                 <FormControl variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
